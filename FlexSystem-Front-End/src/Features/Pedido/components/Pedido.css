@@ -1,0 +1,453 @@
+/* Pedido.css - Estilo Flexisur (actualizado para coincidir con register) */
+
+.pedido-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.pedido-card {
+  width: 100%;
+  max-width: 80rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: white;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+/* Header */
+.pedido-header {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  padding: 1.5rem;
+  text-align: center;
+  color: white;
+}
+
+.pedido-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.pedido-header p {
+  color: #bfdbfe;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Main Content */
+.pedido-main {
+  padding: 1.5rem;
+  background: white;
+}
+
+.pedido-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.detalles-section {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+}
+
+.detalles-section h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.detalle-item {
+  margin-bottom: 1.5rem;
+}
+
+.detalle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.detalle-select {
+  width: 100%;
+  max-width: 300px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  outline: none;
+  background: white;
+  margin-right: 0.75rem;
+}
+
+.detalle-select:hover {
+  border-color: #d1d5db;
+}
+
+.detalle-select:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #2563eb;
+}
+
+.buscar-btn {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.buscar-btn:hover {
+  background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+  transform: translateY(-1px);
+}
+
+.buscar-btn:active {
+  transform: translateY(0);
+}
+
+.tuercas-container,
+.agregados-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.tuerca-buttons,
+.agregado-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cantidad-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.cantidad-btn:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-1px);
+}
+
+.cantidad-btn:active {
+  transform: translateY(0);
+}
+
+.segunda-tuerca {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.dots {
+  color: #6b7280;
+  font-size: 1.125rem;
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.descripcion-section {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+  height: fit-content;
+}
+
+.descripcion-section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.descripcion-textarea {
+  width: 100%;
+  height: 150px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  outline: none;
+  background: white;
+}
+
+.descripcion-textarea:hover {
+  border-color: #d1d5db;
+}
+
+.descripcion-textarea:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #2563eb;
+}
+
+.descripcion-textarea::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.resumen-section {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+  margin-top: 1.5rem;
+}
+
+.resumen-section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.resumen-items {
+  margin-bottom: 1.5rem;
+}
+
+.resumen-item {
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.resumen-subitem {
+  padding: 0.375rem 0;
+  padding-left: 1.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.importe-total {
+  text-align: right;
+  margin: 1.5rem 0;
+  font-size: 1.125rem;
+  color: #1e293b;
+  font-weight: 600;
+  padding: 1rem;
+  background: white;
+  border-radius: 0.5rem;
+  border: 2px solid #2563eb;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.cancelar-btn {
+  background: #f3f4f6;
+  color: #374151;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.cancelar-btn:hover {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+.cancelar-btn:active {
+  transform: translateY(0);
+}
+
+.continuar-btn {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.continuar-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  transform: translateY(-1px);
+}
+
+.continuar-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .pedido-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .pedido-container {
+    padding: 0.5rem;
+  }
+
+  .pedido-main {
+    padding: 1rem;
+  }
+
+  .detalle-select {
+    width: 100%;
+    max-width: none;
+    margin-bottom: 0.75rem;
+    margin-right: 0;
+  }
+
+  .tuercas-container,
+  .agregados-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .segunda-tuerca {
+    margin-top: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .cancelar-btn,
+  .continuar-btn {
+    width: 100%;
+  }
+
+  .buscar-btn {
+    width: 100%;
+  }
+
+  .tuerca-buttons,
+  .agregado-buttons {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .pedido-header {
+    padding: 1rem;
+  }
+
+  .detalles-section,
+  .descripcion-section,
+  .resumen-section {
+    padding: 1rem;
+  }
+
+  .detalle-select,
+  .descripcion-textarea {
+    font-size: 1rem; /* Evita zoom en iOS */
+  }
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Estados de validación */
+.detalle-select.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+}
+
+.detalle-select.success {
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.success-message {
+  color: #10b981;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* Loading states */
+.loading-spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Disabled states */
+.buscar-btn:disabled,
+.continuar-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.buscar-btn:disabled:hover,
+.continuar-btn:disabled:hover {
+  transform: none;
+}

@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import './login.css';
 import { useNavigate } from 'react-router-dom';
+import {authService} from '../service/authService';
 
 interface LoginFormData {
-  id: string;
+  email: string;
   password: string;
 }
 
 const FlexisurLogin: React.FC = () => {
   const [formData, setFormData] = useState<LoginFormData>({
-    id: '',
+    email: '',
     password: ''
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
 const navigate = useNavigate();  
 
@@ -23,9 +26,38 @@ const navigate = useNavigate();
     }));
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     console.log('Login attempt:', formData);
-    // Aquí iría la lógica de autenticación
+    
+    if(!formData.email || !formData.password){
+      alert('Por favor, complete todos los campos.');
+      return;
+    }
+
+    //validaciones
+
+    //validaciones
+
+    setIsLoading(true);
+    try{
+      console.log(formData)
+      const response = await authService.login(formData)
+
+      if(response.token){
+        setTimeout(() => {
+          window.location.href = '/pedido';
+        },1000);
+      }
+      else{
+        alert('Login failed: No token received');
+      }
+    }catch (error) {
+      alert('Error during login: ' + (error as Error).message);
+    }finally{
+      setIsLoading(false);
+    }
+
+
   };
 
   const handleCreateAccount = () => {
@@ -56,8 +88,8 @@ const navigate = useNavigate();
               <input
                 type="text"
                 name="id"
-                placeholder="Ingrese su Id"
-                value={formData.id}
+                placeholder="Ingrese su Email"
+                value={formData.email}
                 onChange={handleInputChange}
                 className="form-input"
               />
