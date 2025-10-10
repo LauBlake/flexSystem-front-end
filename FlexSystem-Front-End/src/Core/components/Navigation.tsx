@@ -26,18 +26,15 @@ const Navigation: React.FC = () => {
         {isAuthenticated && (
           <>
             <Link to="/pedido" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
-              Pedidos
+              Crear Pedido
             </Link>
-            {(user?.role === 'admin' || user?.role === 'manager') && (
-              <Link to="/detalle-pedido" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
-                Detalle Pedidos
-              </Link>
-            )}
-            {user?.role === 'admin' && (
-              <Link to="/admin-pedidos" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
-                Admin Pedidos
-              </Link>
-            )}
+            <Link to="/detalle-pedido" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
+              Detalle Pedidos
+            </Link>
+            {/* TEMPORALMENTE visible para todos mientras no hay roles en backend */}
+            <Link to="/admin-pedidos" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
+              Admin Pedidos
+            </Link>
           </>
         )}
       </div>

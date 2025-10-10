@@ -1,0 +1,19 @@
+/* Global input fix: ensure typed text is visible in all inputs/textareas across the app.
+	Some component styles used transparent text-fill or white-on-white backgrounds
+	which made typed characters disappear. This file enforces readable colors and
+	caret visibility without touching component-level styles. */
+
+input, textarea, select, .form-input, .pago-input, .filtro-input {
+  /* Visible text color */
+  color: #111 !important;
+  /* Fix WebKit text-fill issues */
+  -webkit-text-fill-color: #111 !important;
+  /* Ensure caret is visible */
+  caret-color: #111 !important;
+}
+
+/* If any inputs intentionally use white text on dark backgrounds, they should
+	set a more specific selector (component CSS) to override this global rule.
+	This global rule is intentionally strong to avoid the 'disappearing text'
+	problem caused by conflicting styles. */
+

@@ -44,17 +44,18 @@ const { login } = useAuth();
         
         console.log('Login Successful', authService.getUserInfo())
         
-        // Obtener información del usuario para redirigir según rol
-        const userInfo = authService.getUserInfo();
+        // TODO: Cuando el backend maneje roles, descomentar y usar lógica de roles
+        // const userInfo = authService.getUserInfo();
+        // if (userInfo && userInfo.role === 'admin') {
+        //   navigate('/admin-pedidos');
+        // } else if (userInfo && userInfo.role === 'manager') {
+        //   navigate('/detalle-pedido');
+        // } else {
+        //   navigate('/pedido');
+        // }
         
-        // Redirigir según el rol del usuario
-        if (userInfo && userInfo.role === 'admin') {
-          navigate('/admin-pedidos');
-        } else if (userInfo && userInfo.role === 'manager') {
-          navigate('/detalle-pedido');
-        } else {
-          navigate('/pedido');
-        }
+        // TEMPORALMENTE: Redirigir a admin-pedidos para ver la UI
+        navigate('/admin-pedidos');
       }
       else{
         alert('Login failed: No token received');
@@ -104,7 +105,7 @@ const { login } = useAuth();
             {/* Password Input */}
             <div>
               <input
-                type="password"
+                type="text"
                 name="password"
                 placeholder="Ingrese su contraseña"
                 value={formData.password}

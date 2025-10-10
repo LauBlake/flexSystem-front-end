@@ -1,10 +1,13 @@
 // register.tsx - Usando las clases CSS
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './register.css';
 import { authService } from '../service/authService';
 import type { NewUser } from '../service/authService';
 
 const FlexisurRegister: React.FC = () => {
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     nombre: '',
     cuil: '',
@@ -48,10 +51,11 @@ const FlexisurRegister: React.FC = () => {
 
     try{
       const response = await authService.register(data);
-      if(response.token){
+      if(response.access_token){
       setTimeout(() => {
         console.log('Datos:', formData);
         setIsLoading(false);
+        navigate('/login');
       }, 2000);
     }
   }catch(error){
@@ -180,7 +184,7 @@ const FlexisurRegister: React.FC = () => {
                 🔒 Ingresar tu Contraseña <span className="required">*</span>
               </label>
               <input
-                type="password"
+                type="text"
                 className="form-input"
                 placeholder="Mínimo 8 caracteres"
                 value={formData.contrasenia}

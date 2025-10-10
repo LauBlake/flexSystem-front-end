@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './AdminPedidos.css';
 import PagoModal from './PagoModal';
 
@@ -12,12 +12,12 @@ interface Pedido {
 }
 
 const AdminPedidos = () => {
-  const [pedidos] = useState<Pedido[]>([
+  const [pedidos, setPedidos] = useState<Pedido[]>([
     {
       id: 1,
       cliente: 'Santiago',
       pedidoId: 'Pedido: 6',
-      estado: 'Pendiente',
+      estado: 'Confirmado',
       fecha: '06/01/2024',
       importe: 15000
     },
@@ -25,7 +25,7 @@ const AdminPedidos = () => {
       id: 2,
       cliente: 'Samuel',
       pedidoId: 'Pedido: 8',
-      estado: 'Confirmado',
+      estado: 'Pendiente',
       fecha: '09/08/2024',
       importe: 22500
     },
@@ -33,7 +33,7 @@ const AdminPedidos = () => {
       id: 3,
       cliente: 'María González',
       pedidoId: 'Pedido: 12',
-      estado: 'Pagado',
+      estado: 'Pendiente',
       fecha: '15/09/2024',
       importe: 18750
     }
@@ -44,6 +44,7 @@ const AdminPedidos = () => {
   const [filtroFecha, setFiltroFecha] = useState<string>('');
   const [pagoModalOpen, setPagoModalOpen] = useState(false);
   const [pedidoSeleccionado, setPedidoSeleccionado] = useState<Pedido | null>(null);
+  const [procesandoPago, setProcesandoPago] = useState(false);
 
   const pedidosFiltrados = pedidos.filter(pedido => {
     const matchEstado = !filtroEstado || pedido.estado === filtroEstado;
@@ -68,6 +69,12 @@ const AdminPedidos = () => {
   };
 
   const handleAbonar = (pedido: Pedido) => {
+    // No permitir abonar si el pedido está en estado 'Pendiente'
+    if (pedido.estado === 'Pendiente') {
+      alert('No puede abonarse un pedido sin confirmar');
+      return;
+    }
+
     setPedidoSeleccionado(pedido);
     setPagoModalOpen(true);
   };
@@ -77,6 +84,21 @@ const AdminPedidos = () => {
     // Aquí podrías abrir otro modal con los detalles completos del pedido
     alert(`Ver detalles del ${pedido.pedidoId} de ${pedido.cliente}`);
   };
+
+  /* Efecto que simula el tiempo de procesamiento y marca el pedido como pagado */
+  useEffect(() => {
+    if (!procesandoPago || !pedidoSeleccionado) return;
+
+    const t = setTimeout(() => {
+      // pedidoSeleccionado no es null aquí por la condición previa
+      setPedidos(prev => prev.map(p => p.id === pedidoSeleccionado!.id ? { ...p, estado: 'Pagado' } : p));
+      console.log('Pago procesado para:', pedidoSeleccionado);
+      setProcesandoPago(false);
+      setPedidoSeleccionado(null);
+    }, 1000);
+
+    return () => clearTimeout(t);
+  }, [procesandoPago, pedidoSeleccionado]);
 
   return (
     <div className="admin-pedidos-container">
@@ -133,8 +155,6 @@ const AdminPedidos = () => {
           <table className="pedidos-tabla">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Cliente</th>
                 <th>Pedido</th>
                 <th>Estado</th>
                 <th>Fecha</th>
@@ -152,8 +172,6 @@ const AdminPedidos = () => {
               ) : (
                 pedidosFiltrados.map((pedido) => (
                   <tr key={pedido.id}>
-                    <td>{pedido.id}</td>
-                    <td className="cliente-cell">{pedido.cliente}</td>
                     <td>{pedido.pedidoId}</td>
                     <td>
                       <span 
@@ -206,11 +224,22 @@ const AdminPedidos = () => {
             setPedidoSeleccionado(null);
           }}
           onConfirmarPago={() => {
-            console.log('Pago confirmado para:', pedidoSeleccionado);
-            setPagoModalOpen(false);
-            setPedidoSeleccionado(null);
-          }}
+                // Inicia la simulación de procesamiento: cerrar modal y mostrar card
+                setPagoModalOpen(false);
+                setProcesandoPago(true);
+                console.log('Iniciando procesamiento para:', pedidoSeleccionado);
+              }}
         />
+      )}
+
+      {/* Card de procesamiento durante el pago */}
+      {procesandoPago && (
+        <div className="processing-overlay">
+          <div className="processing-card">
+            <div className="spinner" />
+            <div className="processing-text">Procesando pago...</div>
+          </div>
+        </div>
       )}
     </div>
   );
