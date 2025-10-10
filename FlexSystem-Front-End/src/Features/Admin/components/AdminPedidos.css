@@ -1,0 +1,257 @@
+.admin-pedidos-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.admin-pedidos-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 40px;
+  width: 100%;
+  max-width: 1200px;
+  backdrop-filter: blur(10px);
+}
+
+/* Header */
+.admin-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.admin-title {
+  font-size: 48px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.admin-subtitle {
+  color: #666;
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.admin-divider {
+  height: 4px;
+  width: 120px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  margin: 20px auto;
+  border-radius: 2px;
+}
+
+/* Filtros */
+.filtros-section {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  padding: 20px;
+  background: rgba(102, 126, 234, 0.05);
+  border-radius: 10px;
+}
+
+.filtro-grupo {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filtro-grupo label {
+  font-weight: 600;
+  color: #667eea;
+  font-size: 14px;
+}
+
+.filtro-select,
+.filtro-input {
+  padding: 10px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.filtro-select:focus,
+.filtro-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Tabla */
+.pedidos-tabla-container {
+  overflow-x: auto;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.pedidos-tabla {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+}
+
+.pedidos-tabla thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.pedidos-tabla th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pedidos-tabla th:first-child {
+  border-top-left-radius: 10px;
+}
+
+.pedidos-tabla th:last-child {
+  border-top-right-radius: 10px;
+}
+
+.pedidos-tabla tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.pedidos-tabla tbody tr:hover {
+  background: rgba(102, 126, 234, 0.05);
+  transform: scale(1.01);
+}
+
+.pedidos-tabla td {
+  padding: 15px;
+  font-size: 14px;
+  color: #333;
+}
+
+.cliente-cell {
+  font-weight: 600;
+  color: #667eea;
+}
+
+.estado-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.importe-cell {
+  font-weight: 700;
+  color: #51cf66;
+  font-size: 16px;
+}
+
+.acciones-cell {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-ver,
+.btn-abonar {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-ver {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-ver:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-abonar {
+  background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
+  color: white;
+}
+
+.btn-abonar:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(81, 207, 102, 0.4);
+}
+
+.btn-abonar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.no-pedidos {
+  text-align: center;
+  padding: 40px !important;
+  color: #999;
+  font-style: italic;
+}
+
+/* Footer */
+.admin-footer {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.footer-text {
+  color: #666;
+  font-size: 14px;
+}
+
+.footer-text strong {
+  color: #667eea;
+  font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-pedidos-card {
+    padding: 20px;
+  }
+
+  .filtros-section {
+    flex-direction: column;
+  }
+
+  .pedidos-tabla {
+    font-size: 12px;
+  }
+
+  .pedidos-tabla th,
+  .pedidos-tabla td {
+    padding: 10px;
+  }
+
+  .acciones-cell {
+    flex-direction: column;
+  }
+}

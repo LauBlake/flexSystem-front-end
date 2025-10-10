@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './login.css';
 import { useNavigate } from 'react-router-dom';
 import {authService} from '../service/authService';
+import { useAuth } from '../context/AuthContext';
 
 interface LoginFormData {
   email: string;
@@ -14,9 +15,8 @@ const FlexisurLogin: React.FC = () => {
     password: ''
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-
-const navigate = useNavigate();  
+const navigate = useNavigate();
+const { login } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -34,27 +34,33 @@ const navigate = useNavigate();
       return;
     }
 
-    //validaciones
-
-    //validaciones
-
-    setIsLoading(true);
     try{
       console.log(formData)
       const response = await authService.login(formData)
 
-      if(response.token){
-        setTimeout(() => {
-          window.location.href = '/pedido';
-        },1000);
+      if(response.access_token){
+        // Usar el login del contexto para actualizar el estado global
+        login(response.access_token);
+        
+        console.log('Login Successful', authService.getUserInfo())
+        
+        // Obtener información del usuario para redirigir según rol
+        const userInfo = authService.getUserInfo();
+        
+        // Redirigir según el rol del usuario
+        if (userInfo && userInfo.role === 'admin') {
+          navigate('/admin-pedidos');
+        } else if (userInfo && userInfo.role === 'manager') {
+          navigate('/detalle-pedido');
+        } else {
+          navigate('/pedido');
+        }
       }
       else{
         alert('Login failed: No token received');
       }
     }catch (error) {
       alert('Error during login: ' + (error as Error).message);
-    }finally{
-      setIsLoading(false);
     }
 
 
@@ -87,7 +93,7 @@ const navigate = useNavigate();
             <div>
               <input
                 type="text"
-                name="id"
+                name="email"
                 placeholder="Ingrese su Email"
                 value={formData.email}
                 onChange={handleInputChange}

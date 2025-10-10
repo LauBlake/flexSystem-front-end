@@ -1,93 +1,42 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { usePedidos } from '../context/PedidoContext';
 import './DetallePedido.css';
 
-interface ItemPedido {
-  id: number;
-  descripcion: string;
-  cantidad?: number;
-}
-
-interface PedidoCompleto {
-  id: number;
-  camisa: ItemPedido | null;
-  cano: ItemPedido | null;
-  tuercas: ItemPedido[];
-  agregados: ItemPedido[];
-  descripcion: string;
-  importe: number;
-  fechaCreacion: Date;
-  estado: 'pendiente' | 'procesando' | 'completado' | 'cancelado';
-}
-
 const DetallePedido = () => {
-  const [pedidos, setPedidos] = useState<PedidoCompleto[]>([]);
+  const navigate = useNavigate();
+  const { pedidos, eliminarPedido } = usePedidos();
   const [expandedPedido, setExpandedPedido] = useState<number | null>(null);
-
-  // Simulación de datos de pedidos (en una implementación real, estos vendrían de la API)
-  useEffect(() => {
-    const pedidosSimulados: PedidoCompleto[] = [
-      {
-        id: 1,
-        camisa: { id: 1, descripcion: "Camisa estándar" },
-        cano: { id: 1, descripcion: "Caño tipo A" },
-        tuercas: [
-          { id: 1, descripcion: "Tuerca1 xN", cantidad: 2 },
-          { id: 2, descripcion: "Tuerca2 xN", cantidad: 1 }
-        ],
-        agregados: [
-          { id: 1, descripcion: "Agregado especial", cantidad: 1 }
-        ],
-        descripcion: "Pedido para instalación industrial",
-        importe: 15700,
-        fechaCreacion: new Date('2024-10-01'),
-        estado: 'pendiente'
-      },
-      {
-        id: 2,
-        camisa: { id: 2, descripcion: "Camisa reforzada" },
-        cano: { id: 2, descripcion: "Caño tipo B" },
-        tuercas: [
-          { id: 1, descripcion: "Tuerca1 xN", cantidad: 4 },
-          { id: 2, descripcion: "Tuerca2 xN", cantidad: 2 }
-        ],
-        agregados: [
-          { id: 1, descripcion: "Agregado premium", cantidad: 2 }
-        ],
-        descripcion: "Manguera para uso en exteriores",
-        importe: 22400,
-        fechaCreacion: new Date('2024-10-02'),
-        estado: 'procesando'
-      },
-      {
-        id: 3,
-        camisa: { id: 3, descripcion: "Camisa flexible" },
-        cano: { id: 3, descripcion: "Caño tipo C" },
-        tuercas: [
-          { id: 1, descripcion: "Tuerca1 xN", cantidad: 2 },
-          { id: 2, descripcion: "Tuerca2 xN", cantidad: 2 }
-        ],
-        agregados: [],
-        descripcion: "Aplicación residencial estándar",
-        importe: 12500,
-        fechaCreacion: new Date('2024-10-03'),
-        estado: 'completado'
-      }
-    ];
-    
-    setPedidos(pedidosSimulados);
-  }, []);
 
   const toggleExpanded = (pedidoId: number) => {
     setExpandedPedido(expandedPedido === pedidoId ? null : pedidoId);
   };
 
   const handleVerDetalle = (pedidoId: number) => {
-    console.log(`Ver detalle del pedido ${pedidoId}`);
+    toggleExpanded(pedidoId);
   };
 
   const handleAgregarPedido = () => {
-    console.log('Agregar nuevo pedido');
-    // Aquí navegarías al componente Pedido
+    navigate('/pedido');
+  };
+
+  const handleEliminarPedido = (pedidoId: number) => {
+    if (window.confirm('¿Está seguro que desea eliminar este pedido?')) {
+      eliminarPedido(pedidoId);
+    }
+  };
+
+  const handleCancelar = () => {
+    navigate('/pedido');
+  };
+
+  const handleContinuar = () => {
+    if (pedidos.length === 0) {
+      alert('No hay pedidos para procesar');
+      return;
+    }
+    console.log('Procesar pedidos:', pedidos);
+    alert('Pedidos procesados exitosamente');
   };
 
   const formatearImporte = (importe: number) => {
@@ -116,8 +65,17 @@ const DetallePedido = () => {
         </div>
         
         <div className="detalle-pedido-main">
-          <div className="pedidos-list">
-            {pedidos.map((pedido) => (
+          {pedidos.length === 0 ? (
+            <div className="empty-state">
+              <p>No hay pedidos agregados</p>
+              <button className="add-pedido-btn-large" onClick={handleAgregarPedido}>
+                + Agregar Primer Pedido
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="pedidos-list">
+                {pedidos.map((pedido) => (
               <div key={pedido.id} className="pedido-item">
                 <div className="pedido-summary">
                   <div className="pedido-info">
@@ -165,6 +123,12 @@ const DetallePedido = () => {
                     >
                       ⚙️ Ver
                     </button>
+                    <button 
+                      className="eliminar-btn" 
+                      onClick={() => handleEliminarPedido(pedido.id)}
+                    >
+                      🗑️
+                    </button>
                   </div>
                 </div>
                 
@@ -202,28 +166,30 @@ const DetallePedido = () => {
                 )}
               </div>
             ))}
-          </div>
-          
-          <div className="add-pedido-section">
-            <button className="add-pedido-btn" onClick={handleAgregarPedido}>
-              <span className="add-icon">+</span>
-            </button>
-          </div>
-          
-          <div className="summary-section">
-            <div className="total-info">
-              <h3>Importe TOTAL: {formatearImporte(pedidos.reduce((sum, p) => sum + p.importe, 0))}</h3>
-            </div>
-            
-            <div className="action-buttons">
-              <button className="cancelar-btn">
-                Cancelar
-              </button>
-              <button className="continuar-btn">
-                Continuar
-              </button>
-            </div>
-          </div>
+              </div>
+              
+              <div className="add-pedido-section">
+                <button className="add-pedido-btn" onClick={handleAgregarPedido}>
+                  <span className="add-icon">+</span>
+                </button>
+              </div>
+              
+              <div className="summary-section">
+                <div className="total-info">
+                  <h3>Importe TOTAL: {formatearImporte(pedidos.reduce((sum, p) => sum + p.importe, 0))}</h3>
+                </div>
+                
+                <div className="action-buttons">
+                  <button className="cancelar-btn" onClick={handleCancelar}>
+                    Cancelar
+                  </button>
+                  <button className="continuar-btn" onClick={handleContinuar}>
+                    Continuar
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

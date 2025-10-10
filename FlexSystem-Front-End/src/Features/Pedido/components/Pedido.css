@@ -451,3 +451,109 @@
 .continuar-btn:disabled:hover {
   transform: none;
 }
+
+/* Botón de cantidad activo */
+.cantidad-btn.active {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.cantidad-btn.active:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+/* Estilos para el resumen dinámico */
+.resumen-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.resumen-subitems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.resumen-subitem {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 1.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.detalle-group {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+/* Botones para agregar items */
+.add-item-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+}
+
+.add-item-btn:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.add-item-btn:active {
+  transform: translateY(0);
+}
+
+/* Botón de eliminar item */
+.remove-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-1px);
+}
+
+.remove-btn:active {
+  transform: translateY(0);
+}
+
+/* Ajustes para los contenedores de tuercas y agregados */
+.tuercas-container,
+.agregados-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.tuerca-buttons,
+.agregado-buttons {
+  display: flex;
+  gap: 0.5rem;
+}

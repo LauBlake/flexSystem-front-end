@@ -1,6 +1,8 @@
 // register.tsx - Usando las clases CSS
 import React, { useState } from 'react';
 import './register.css';
+import { authService } from '../service/authService';
+import type { NewUser } from '../service/authService';
 
 const FlexisurRegister: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -25,13 +27,36 @@ const FlexisurRegister: React.FC = () => {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleRegister = async () => {
+    if(!formData.nombre || !formData.cuil || !formData.apellido || !formData.mail || !formData.direccion || !formData.telefono || !formData.numero || !formData.contrasenia){
+      alert('Por favor, complete todos los campos obligatorios.');
+      return;
+    }
+    // validaciones 
+
+    // validaciones
+    const data: NewUser = {
+      name: formData.nombre,
+      cuit: formData.cuil,
+      email: formData.mail,
+      password: formData.contrasenia,
+      surname: formData.apellido,
+      phone: formData.telefono,
+      address: formData.direccion
+    }
     setIsLoading(true);
-    // Simular API call
-    setTimeout(() => {
-      console.log('Datos:', formData);
-      setIsLoading(false);
-    }, 2000);
+
+    try{
+      const response = await authService.register(data);
+      if(response.token){
+      setTimeout(() => {
+        console.log('Datos:', formData);
+        setIsLoading(false);
+      }, 2000);
+    }
+  }catch(error){
+    setIsLoading(false);
+    alert('Error durante el registro: ' + (error as Error).message);}
   };
 
   return (
@@ -201,7 +226,7 @@ const FlexisurRegister: React.FC = () => {
             <button
               type="button"
               className="btn-primary"
-              onClick={handleSubmit}
+              onClick={handleRegister}
               disabled={isLoading}
             >
               {isLoading && <div className="loading-spinner"></div>}
