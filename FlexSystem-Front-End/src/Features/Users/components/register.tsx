@@ -51,12 +51,12 @@ const FlexisurRegister: React.FC = () => {
 
     try{
       const response = await authService.register(data);
-      if(response.access_token){
+      if(response){
       setTimeout(() => {
         console.log('Datos:', formData);
         setIsLoading(false);
         navigate('/login');
-      }, 2000);
+      }, 1000);
     }
   }catch(error){
     setIsLoading(false);
@@ -184,7 +184,7 @@ const FlexisurRegister: React.FC = () => {
                 🔒 Ingresar tu Contraseña <span className="required">*</span>
               </label>
               <input
-                type="text"
+                type="password"
                 className="form-input"
                 placeholder="Mínimo 8 caracteres"
                 value={formData.contrasenia}

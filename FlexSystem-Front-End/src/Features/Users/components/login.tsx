@@ -105,7 +105,7 @@ const { login } = useAuth();
             {/* Password Input */}
             <div>
               <input
-                type="text"
+                type="password"
                 name="password"
                 placeholder="Ingrese su contraseña"
                 value={formData.password}

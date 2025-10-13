@@ -108,7 +108,7 @@ export const authService = {
                 password: data.password,
                 surname: data.surname,
                 phone: data.phone,
-                address: data.address
+                adress: data.address
             });
             return response;
         }catch(error){
