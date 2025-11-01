@@ -1,104 +1,32 @@
 import { useState, useEffect } from 'react';
 import './AdminPedidos.css';
-import PagoModal from './PagoModal';
+import type { OrderInfo } from '../../Pedido/order.interface.ts';
+import { orderService } from '../../Pedido/services/orderService.ts';
+import { OrderCard } from '../../Pedido/components/OrderCard.tsx';
 
-interface Pedido {
-  id: number;
-  cliente: string;
-  pedidoId: string;
-  estado: 'Pendiente' | 'Confirmado' | 'Pagado' | 'Completado';
-  fecha: string;
-  importe: number;
-}
 
 const AdminPedidos = () => {
-  const [pedidos, setPedidos] = useState<Pedido[]>([
-    {
-      id: 1,
-      cliente: 'Santiago',
-      pedidoId: 'Pedido: 6',
-      estado: 'Confirmado',
-      fecha: '06/01/2024',
-      importe: 15000
-    },
-    {
-      id: 2,
-      cliente: 'Samuel',
-      pedidoId: 'Pedido: 8',
-      estado: 'Pendiente',
-      fecha: '09/08/2024',
-      importe: 22500
-    },
-    {
-      id: 3,
-      cliente: 'María González',
-      pedidoId: 'Pedido: 12',
-      estado: 'Pendiente',
-      fecha: '15/09/2024',
-      importe: 18750
-    }
-  ]);
+  const [orders, setOrders] = useState<OrderInfo[]>([]);
 
   const [filtroEstado, setFiltroEstado] = useState<string>('');
   const [filtroPedido, setFiltroPedido] = useState<string>('');
   const [filtroFecha, setFiltroFecha] = useState<string>('');
-  const [pagoModalOpen, setPagoModalOpen] = useState(false);
-  const [pedidoSeleccionado, setPedidoSeleccionado] = useState<Pedido | null>(null);
-  const [procesandoPago, setProcesandoPago] = useState(false);
-
-  const pedidosFiltrados = pedidos.filter(pedido => {
-    const matchEstado = !filtroEstado || pedido.estado === filtroEstado;
-    const matchPedido = !filtroPedido || pedido.pedidoId.toLowerCase().includes(filtroPedido.toLowerCase());
-    const matchFecha = !filtroFecha || pedido.fecha.includes(filtroFecha);
-    return matchEstado && matchPedido && matchFecha;
-  });
-
-  const getEstadoColor = (estado: string) => {
-    switch (estado) {
-      case 'Pendiente':
-        return '#ff6b6b';
-      case 'Confirmado':
-        return '#4ecdc4';
-      case 'Pagado':
-        return '#95e1d3';
-      case 'Completado':
-        return '#51cf66';
-      default:
-        return '#868e96';
-    }
-  };
-
-  const handleAbonar = (pedido: Pedido) => {
-    // No permitir abonar si el pedido está en estado 'Pendiente'
-    if (pedido.estado === 'Pendiente') {
-      alert('No puede abonarse un pedido sin confirmar');
-      return;
-    }
-
-    setPedidoSeleccionado(pedido);
-    setPagoModalOpen(true);
-  };
-
-  const handleVerDetalle = (pedido: Pedido) => {
-    console.log('Ver detalle de pedido:', pedido);
-    // Aquí podrías abrir otro modal con los detalles completos del pedido
-    alert(`Ver detalles del ${pedido.pedidoId} de ${pedido.cliente}`);
-  };
-
-  /* Efecto que simula el tiempo de procesamiento y marca el pedido como pagado */
+  
   useEffect(() => {
-    if (!procesandoPago || !pedidoSeleccionado) return;
-
-    const t = setTimeout(() => {
-      // pedidoSeleccionado no es null aquí por la condición previa
-      setPedidos(prev => prev.map(p => p.id === pedidoSeleccionado!.id ? { ...p, estado: 'Pagado' } : p));
-      console.log('Pago procesado para:', pedidoSeleccionado);
-      setProcesandoPago(false);
-      setPedidoSeleccionado(null);
-    }, 1000);
-
-    return () => clearTimeout(t);
-  }, [procesandoPago, pedidoSeleccionado]);
+    const fecthOrders = async () => {
+      try {
+        const orders = await orderService.searchOrders({
+          state: filtroEstado.length ? filtroEstado : null,
+          orderId: filtroPedido ? parseInt(filtroPedido) : null
+        });
+        setOrders(orders);
+      } catch (error) {
+        console.log("No order found");
+        setOrders([]);
+      }
+    }
+    fecthOrders();
+  }, [filtroEstado, filtroPedido, filtroFecha]);
 
   return (
     <div className="admin-pedidos-container">
@@ -163,45 +91,16 @@ const AdminPedidos = () => {
               </tr>
             </thead>
             <tbody>
-              {pedidosFiltrados.length === 0 ? (
+              {orders.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="no-pedidos">
                     No se encontraron pedidos
                   </td>
                 </tr>
               ) : (
-                pedidosFiltrados.map((pedido) => (
-                  <tr key={pedido.id}>
-                    <td>{pedido.pedidoId}</td>
-                    <td>
-                      <span 
-                        className="estado-badge"
-                        style={{ backgroundColor: getEstadoColor(pedido.estado) }}
-                      >
-                        {pedido.estado}
-                      </span>
-                    </td>
-                    <td>{pedido.fecha}</td>
-                    <td className="importe-cell">
-                      ${pedido.importe.toLocaleString('es-AR')}
-                    </td>
-                    <td className="acciones-cell">
-                      <button 
-                        className="btn-ver"
-                        onClick={() => handleVerDetalle(pedido)}
-                      >
-                        Ver
-                      </button>
-                      <button 
-                        className="btn-abonar"
-                        onClick={() => handleAbonar(pedido)}
-                        disabled={pedido.estado === 'Pagado' || pedido.estado === 'Completado'}
-                      >
-                        Abonar
-                      </button>
-                    </td>
-                  </tr>
-                ))
+                orders.map((order, index) => (
+                  <OrderCard key={index} orderInfo={order}></OrderCard>
+                  ))
               )}
             </tbody>
           </table>
@@ -210,37 +109,10 @@ const AdminPedidos = () => {
         {/* Footer */}
         <div className="admin-footer">
           <p className="footer-text">
-            Total de pedidos: <strong>{pedidosFiltrados.length}</strong>
+            Total de pedidos: <strong>{orders.length}</strong>
           </p>
         </div>
       </div>
-
-      {/* Modal de Pago */}
-      {pagoModalOpen && pedidoSeleccionado && (
-        <PagoModal
-          pedido={pedidoSeleccionado}
-          onClose={() => {
-            setPagoModalOpen(false);
-            setPedidoSeleccionado(null);
-          }}
-          onConfirmarPago={() => {
-                // Inicia la simulación de procesamiento: cerrar modal y mostrar card
-                setPagoModalOpen(false);
-                setProcesandoPago(true);
-                console.log('Iniciando procesamiento para:', pedidoSeleccionado);
-              }}
-        />
-      )}
-
-      {/* Card de procesamiento durante el pago */}
-      {procesandoPago && (
-        <div className="processing-overlay">
-          <div className="processing-card">
-            <div className="spinner" />
-            <div className="processing-text">Procesando pago...</div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
