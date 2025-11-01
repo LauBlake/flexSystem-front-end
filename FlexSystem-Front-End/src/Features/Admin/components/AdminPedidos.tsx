@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './AdminPedidos.css';
-import type { OrderInfo } from '../../Pedido/order.interface.ts';
+import { ORDER_STATE_TXT, type OrderInfo } from '../../Pedido/order.interface.ts';
 import { orderService } from '../../Pedido/services/orderService.ts';
 import { OrderCard } from '../../Pedido/components/OrderCard.tsx';
 
@@ -11,13 +11,14 @@ const AdminPedidos = () => {
   const [filtroEstado, setFiltroEstado] = useState<string>('');
   const [filtroPedido, setFiltroPedido] = useState<string>('');
   const [filtroFecha, setFiltroFecha] = useState<string>('');
-  
+
   useEffect(() => {
     const fecthOrders = async () => {
       try {
         const orders = await orderService.searchOrders({
           state: filtroEstado.length ? filtroEstado : null,
-          orderId: filtroPedido ? parseInt(filtroPedido) : null
+          orderId: filtroPedido ? parseInt(filtroPedido) : null,
+          date: filtroFecha.length ? filtroFecha : null
         });
         setOrders(orders);
       } catch (error) {
@@ -48,10 +49,10 @@ const AdminPedidos = () => {
               className="filtro-select"
             >
               <option value="">Todos</option>
-              <option value="Pendiente">Pendiente</option>
-              <option value="Confirmado">Confirmado</option>
-              <option value="Pagado">Pagado</option>
-              <option value="Completado">Completado</option>
+              <option value="P">{ORDER_STATE_TXT["P" as keyof typeof ORDER_STATE_TXT]}</option>
+              <option value="IP">{ORDER_STATE_TXT["IP" as keyof typeof ORDER_STATE_TXT]}</option>
+              <option value="OTW">{ORDER_STATE_TXT["OTW" as keyof typeof ORDER_STATE_TXT]}</option>
+              <option value="D">{ORDER_STATE_TXT["D" as keyof typeof ORDER_STATE_TXT]}</option>
             </select>
           </div>
 
