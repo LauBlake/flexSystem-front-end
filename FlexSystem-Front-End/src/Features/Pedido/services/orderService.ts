@@ -1,4 +1,5 @@
 import { apiClient } from "../../service/api.ts"
+import { authService } from "../../Users/service/authService.ts";
 import type { OrderInfo, OrderQuery } from "../order.interface.ts";
 
 
@@ -22,8 +23,10 @@ const formatQuery = (query: OrderQuery) : string => {
 
 export const orderService = {
     async searchOrders(query: OrderQuery): Promise<OrderInfo[]> {
+        const usrInfo = authService.getUserInfo();
+        const userEndpoint = usrInfo ? ("search-" + usrInfo?.role): "search-admin";
         try {
-            const response = await apiClient.get(`orders/search-admin?${formatQuery(query)}`);
+            const response = await apiClient.get(`orders/${userEndpoint}?${formatQuery(query)}`);
             return (response.data as any[]).map<OrderInfo>((order: any): OrderInfo => {
                 let orderPrice: number = 0.0;
                 for (const hose of order.hose) {
@@ -38,8 +41,10 @@ export const orderService = {
                 return {
                     orderId: order.id,
                     state: order.state,
+                    description: order.description,
                     orderDate: formattedDate,
                     client: order.client,
+                    hoses: order.hose,
                     amount: String(orderPrice)
                 };
             });
