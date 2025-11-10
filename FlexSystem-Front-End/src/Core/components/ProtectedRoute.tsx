@@ -10,6 +10,10 @@ interface ProtectedRouteProps {
 export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
   const { isAuthenticated, user, loading } = useAuth();
 
+  const getUserRole = (user: any) => {
+    return user?.role[0];
+  };
+
   // Mostrar loading mientras se verifica la autenticación
   if (loading) {
     return (
@@ -36,14 +40,10 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
     return <Navigate to="/login" replace />;
   }
 
-  // TODO: Descomentar cuando el backend maneje roles correctamente
   // Si se requiere un rol específico y el usuario no lo tiene, redirigir a home
-  // if (requiredRole && user?.role !== requiredRole) {
-  //   return <Navigate to="/" replace />;
-  // }
-
-  // TEMPORALMENTE: Permitir acceso a todos los usuarios autenticados
-  console.log('User role:', user?.role, 'Required role:', requiredRole);
+  if (requiredRole && getUserRole(user) !== requiredRole) {
+     return <Navigate to="/" replace />;
+  }
 
   // Si pasa todas las validaciones, mostrar el contenido
   return <>{children}</>;
