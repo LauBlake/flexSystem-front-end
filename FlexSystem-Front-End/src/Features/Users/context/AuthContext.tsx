@@ -7,7 +7,7 @@ interface AuthContextType {
   user: JWTPayLoad | null;
   isAuthenticated: boolean;
   loading: boolean;
-  login: (token: string) => void;
+  login: (token: string) => JWTPayLoad | null;
   logout: () => void;
 }
 
@@ -41,6 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem('token', token);
       const userInfo = authService.getUserInfo();
       setUser(userInfo);
+      return userInfo; // <-- DEVOLVER EL USUARIO
     } catch (error) {
       console.error('Error al procesar login:', error);
       throw error;

@@ -16,7 +16,7 @@ const FlexisurLogin: React.FC = () => {
   });
 
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login: ctxLogin } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,37 +27,30 @@ const FlexisurLogin: React.FC = () => {
   };
 
   const handleLogin = async () => {
-    console.log('Login attempt:', formData);
-    
-    if(!formData.username || !formData.password){
+    if (!formData.username || !formData.password) {
       alert('Por favor, complete todos los campos.');
       return;
     }
 
-    try{
-      console.log(formData)
-      const response = await authService.login(formData)
+    try {
+      const response = await authService.login(formData);
+      if (!response?.access_token) throw new Error('No token received');
 
-      if(!response.access_token){
-        alert('Login failed: No token received');
-        throw new Error("No token received");
+      const userInfo = ctxLogin(response.access_token); // ahora devuelve JWTPayLoad | null
+      const role = String(userInfo?.role ?? '').toLowerCase();
+
+      if (role === 'admin') {
+        navigate('/admin-pedidos', { replace: true });
+      } else if (role === 'client') {
+        navigate('/admin-pedidos', { replace: true });
+      } else {
+        navigate('/', { replace: true }); // fallback
       }
-      login(response.access_token);
-        
-      console.log('Login Successful', authService.getUserInfo())
-        
-      const userInfo = authService.getUserInfo();
-      if (userInfo && userInfo.role === 'admin') {
-        navigate('/admin-pedidos');
-      } else if (userInfo && userInfo.role === 'client') {
-        navigate('/detalle-pedido');
-      }
-    }catch (error) {
-      alert('Error during login: ' + (error as Error).message);
+    } catch (err: any) {
+      alert('Error during login: ' + err.message);
     }
-
-
   };
+
 
   const handleCreateAccount = () => {
     console.log('Navigate to create account');

@@ -100,7 +100,7 @@ const AdminPedidos = () => {
                 </tr>
               ) : (
                 orders.map((order, index) => (
-                  <OrderCard key={index} orderInfo={order}></OrderCard>
+                  <OrderCard key={index} rowKey={index} orderInfo={order} />
                   ))
               )}
             </tbody>

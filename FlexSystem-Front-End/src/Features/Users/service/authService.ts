@@ -6,10 +6,18 @@ export interface LoginCredentials {
 }
 
 export interface NewUser{
+
+    username: string;
+    password: string;
+    passwordConfirm: string;
+    client: NewClient;
+
+}
+
+export interface NewClient{
     name: string;
     cuit: string;
     email: string;
-    password: string;
     surname: string;
     phone: string;
     address: string;
@@ -74,7 +82,7 @@ export const authService = {
     logout(){
         localStorage.removeItem('authToken');
     },
-    getUserInfo(){
+    getUserInfo(): JWTPayLoad | null{
         const token = localStorage.getItem('authToken');
         if(token){
             return decodeToken(token);
@@ -101,14 +109,18 @@ export const authService = {
     },
     async register(data: NewUser): Promise<AuthResponse>{
         try{
-            const response = await apiClient.post('auth/register',{
-                name: data.name,
-                cuit: data.cuit,
-                email: data.email,
+            const response = await apiClient.post('auth/register-client',{
+                username: data.username,
                 password: data.password,
-                surname: data.surname,
-                phone: data.phone,
-                adress: data.address
+                passwordConfirm: data.passwordConfirm,
+                client: {
+                    name: data.client.name,
+                    cuit: data.client.cuit,
+                    email: data.client.email,
+                    surname: data.client.surname,
+                    phone: data.client.phone,
+                    adress: data.client.address
+                }
             });
             return response;
         }catch(error){
