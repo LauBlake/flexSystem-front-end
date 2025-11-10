@@ -38,27 +38,19 @@ const FlexisurLogin: React.FC = () => {
       console.log(formData)
       const response = await authService.login(formData)
 
-      if(response.access_token){
-        // Usar el login del contexto para actualizar el estado global
-        login(response.access_token);
-        
-        console.log('Login Successful', authService.getUserInfo())
-        
-        // TODO: Cuando el backend maneje roles, descomentar y usar lógica de roles
-        // const userInfo = authService.getUserInfo();
-        // if (userInfo && userInfo.role === 'admin') {
-        //   navigate('/admin-pedidos');
-        // } else if (userInfo && userInfo.role === 'manager') {
-        //   navigate('/detalle-pedido');
-        // } else {
-        //   navigate('/pedido');
-        // }
-        
-        // TEMPORALMENTE: Redirigir a admin-pedidos para ver la UI
-        navigate('/admin-pedidos');
-      }
-      else{
+      if(!response.access_token){
         alert('Login failed: No token received');
+        throw new Error("No token received");
+      }
+      login(response.access_token);
+        
+      console.log('Login Successful', authService.getUserInfo())
+        
+      const userInfo = authService.getUserInfo();
+      if (userInfo && userInfo.role === 'admin') {
+        navigate('/admin-pedidos');
+      } else if (userInfo && userInfo.role === 'client') {
+        navigate('/detalle-pedido');
       }
     }catch (error) {
       alert('Error during login: ' + (error as Error).message);
