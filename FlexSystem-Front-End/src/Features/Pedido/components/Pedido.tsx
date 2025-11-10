@@ -9,6 +9,11 @@ interface Item {
   descripcion: string;
 }
 
+
+
+
+
+
 const Pedido = () => {
   console.log('User Info:', authService.getUserInfo())
   
@@ -33,34 +38,7 @@ const Pedido = () => {
   const [tuercas, setTuercas] = useState<Item[]>([]);
   const [agregados, setAgregados] = useState<Item[]>([]);
 
-  // Simulación de datos de API (en una implementación real, estos vendrían de llamadas a la API)
-  useEffect(() => {
-    // Simular llamada a API para caños
-    setCanos([
-      { id: 1, descripcion: "Caño tipo A" },
-      { id: 2, descripcion: "Caño tipo B" },
-      { id: 3, descripcion: "Caño tipo C" }
-    ]);
-
-    // Simular llamada a API para camisas
-    setCamisas([
-      { id: 1, descripcion: "Camisa estándar" },
-      { id: 2, descripcion: "Camisa reforzada" },
-      { id: 3, descripcion: "Camisa flexible" }
-    ]);
-
-    // Simular llamada a API para tuercas
-    setTuercas([
-      { id: 1, descripcion: "Tuerca 1: 5xxxx" },
-      { id: 2, descripcion: "Tuerca 2: 8xxxx" }
-    ]);
-
-    // Simular llamada a API para agregados
-    setAgregados([
-      { id: 1, descripcion: "Agregado 1: 5xxxx" },
-      { id: 2, descripcion: "Agregado 2: 8xxxx" }
-    ]);
-  }, []);
+  
 
   const calcularImporte = () => {
     let total = 0;
@@ -72,7 +50,7 @@ const Pedido = () => {
   };
 
   const handleBuscar = (tipo: string) => {
-    console.log(`Buscando en ${tipo}`);
+    navigate("/supply-search");
   };
 
   const handleCancelar = () => {
