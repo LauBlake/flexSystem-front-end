@@ -8,6 +8,7 @@ import Navigation from '../Core/components/Navigation';
 import { PedidoProvider } from '../Features/Pedido/context/PedidoContext';
 import { AuthProvider } from '../Features/Users/context/AuthContext';
 import { ProtectedRoute } from '../Core/components/ProtectedRoute';
+import { SupplySearch } from '../Features/Supplies/pages/SupplySearch.tsx';
 
 const AppRouter = () => {
     return(
@@ -22,8 +23,16 @@ const AppRouter = () => {
             <Route 
               path="/pedido" 
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredRole='client'>
                   <Pedido />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/pedido/supply-search" 
+              element={
+                <ProtectedRoute requiredRole='client'>
+                  <SupplySearch />
                 </ProtectedRoute>
               } 
             />
