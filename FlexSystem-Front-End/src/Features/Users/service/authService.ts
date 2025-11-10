@@ -1,7 +1,7 @@
 import {apiClient} from '../../service/api';
 
 export interface LoginCredentials {
-    email: string;
+    username: string;
     password: string;
 }
 
@@ -60,7 +60,7 @@ export const authService = {
     async login(credentials: LoginCredentials): Promise<AuthResponse>{
         try{
             const response = await apiClient.post('auth/login',{
-                email: credentials.email,
+                username: credentials.username,
                 password: credentials.password    
             });
             if (response.access_token) {

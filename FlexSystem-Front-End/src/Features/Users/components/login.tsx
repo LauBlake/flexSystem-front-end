@@ -5,18 +5,18 @@ import {authService} from '../service/authService';
 import { useAuth } from '../context/AuthContext';
 
 interface LoginFormData {
-  email: string;
+  username: string;
   password: string;
 }
 
 const FlexisurLogin: React.FC = () => {
   const [formData, setFormData] = useState<LoginFormData>({
-    email: '',
+    username: '',
     password: ''
   });
 
-const navigate = useNavigate();
-const { login } = useAuth();
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -29,7 +29,7 @@ const { login } = useAuth();
   const handleLogin = async () => {
     console.log('Login attempt:', formData);
     
-    if(!formData.email || !formData.password){
+    if(!formData.username || !formData.password){
       alert('Por favor, complete todos los campos.');
       return;
     }
@@ -38,27 +38,19 @@ const { login } = useAuth();
       console.log(formData)
       const response = await authService.login(formData)
 
-      if(response.access_token){
-        // Usar el login del contexto para actualizar el estado global
-        login(response.access_token);
-        
-        console.log('Login Successful', authService.getUserInfo())
-        
-        // TODO: Cuando el backend maneje roles, descomentar y usar lógica de roles
-        // const userInfo = authService.getUserInfo();
-        // if (userInfo && userInfo.role === 'admin') {
-        //   navigate('/admin-pedidos');
-        // } else if (userInfo && userInfo.role === 'manager') {
-        //   navigate('/detalle-pedido');
-        // } else {
-        //   navigate('/pedido');
-        // }
-        
-        // TEMPORALMENTE: Redirigir a admin-pedidos para ver la UI
-        navigate('/admin-pedidos');
-      }
-      else{
+      if(!response.access_token){
         alert('Login failed: No token received');
+        throw new Error("No token received");
+      }
+      login(response.access_token);
+        
+      console.log('Login Successful', authService.getUserInfo())
+        
+      const userInfo = authService.getUserInfo();
+      if (userInfo && userInfo.role === 'admin') {
+        navigate('/admin-pedidos');
+      } else if (userInfo && userInfo.role === 'client') {
+        navigate('/detalle-pedido');
       }
     }catch (error) {
       alert('Error during login: ' + (error as Error).message);
@@ -94,9 +86,9 @@ const { login } = useAuth();
             <div>
               <input
                 type="text"
-                name="email"
-                placeholder="Ingrese su Email"
-                value={formData.email}
+                name="username"
+                placeholder="Ingrese su nombre de usuario"
+                value={formData.username}
                 onChange={handleInputChange}
                 className="form-input"
               />
