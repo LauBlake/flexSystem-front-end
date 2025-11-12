@@ -1,13 +1,4 @@
 /* Filtros */
-.filtros-section {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 25px;
-  flex-wrap: wrap;
-  padding: 20px;
-  background: rgba(102, 126, 234, 0.05);
-  border-radius: 10px;
-}
 
 .filtro-grupo {
   flex: 1;

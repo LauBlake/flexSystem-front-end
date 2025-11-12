@@ -1,10 +1,12 @@
-import './Filter.css'
+import './Section.css'
 
+interface FilterSectionProps {
+    children: any
+}
 
-
-export const FilterSection = (props: {children: any}) => {
+export const FilterSection = (props: FilterSectionProps) => {
     return (
-        <div className='filtros-section'>
+        <div className='filter-section'>
             {props.children}
         </div>
     );
