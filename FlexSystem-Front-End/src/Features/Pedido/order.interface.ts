@@ -12,10 +12,12 @@ export interface OrderQuery {
   date?: string | null;
 }
 
+export type SupplyKind = "casing" | "tube" | "screw" | "elbow" | "connector" | "supply";
 /** Coincide con tu DTO/Entidad actual */
 export interface SupplyHoseItem {
   amount: number;
-  supply: number; // supply id
+  supply: number;      // id del insumo
+  type: SupplyKind;    // 👈 NUEVO: tipo concreto para pegarle al controlador correcto
 }
 
 export interface HoseData {

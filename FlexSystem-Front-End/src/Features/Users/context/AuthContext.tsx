@@ -3,6 +3,8 @@ import type { ReactNode } from 'react';
 import { authService } from '../service/authService';
 import type { JWTPayLoad } from '../service/authService';
 
+const STORAGE_KEY = 'authToken'; // 👈 misma clave
+
 interface AuthContextType {
   user: JWTPayLoad | null;
   isAuthenticated: boolean;
@@ -17,35 +19,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<JWTPayLoad | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Verificar si hay un token guardado al montar el componente
   useEffect(() => {
-    const checkAuth = () => {
-      try {
-        if (authService.isAuthenticated()) {
-          const userInfo = authService.getUserInfo();
-          setUser(userInfo);
-        }
-      } catch (error) {
-        console.error('Error al verificar autenticación:', error);
-        authService.logout();
-      } finally {
-        setLoading(false);
+    try {
+      if (authService.isAuthenticated()) {
+        setUser(authService.getUserInfo());
       }
-    };
-
-    checkAuth();
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const login = (token: string) => {
-    try {
-      localStorage.setItem('token', token);
-      const userInfo = authService.getUserInfo();
-      setUser(userInfo);
-      return userInfo; // <-- DEVOLVER EL USUARIO
-    } catch (error) {
-      console.error('Error al procesar login:', error);
-      throw error;
-    }
+    // 👇 guardar con la misma key y decodificar directamente
+    localStorage.setItem(STORAGE_KEY, token);
+    const userInfo = authService.getUserInfo();
+    setUser(userInfo);
+    return userInfo;
   };
 
   const logout = () => {
@@ -65,9 +54,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth debe ser usado dentro de un AuthProvider');
-  }
-  return context;
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth debe ser usado dentro de un AuthProvider');
+  return ctx;
 };

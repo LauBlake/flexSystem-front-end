@@ -40,7 +40,7 @@ const DetallePedido = () => {
   };
 
   const handleCancelar = () => {
-    navigate('/pedido');
+    navigate('/admin-pedidos');
   };
 
   const handleContinuar = () => {
