@@ -28,6 +28,11 @@ interface PedidoContextType {
 
 const PedidoContext = createContext<PedidoContextType | undefined>(undefined);
 
+
+
+
+
+
 export const usePedidos = () => {
   const context = useContext(PedidoContext);
   if (!context) {
@@ -35,6 +40,11 @@ export const usePedidos = () => {
   }
   return context;
 };
+
+
+
+
+
 
 export const PedidoProvider = ({ children }: { children: ReactNode }) => {
   const [pedidos, setPedidos] = useState<PedidoCompleto[]>([]);

@@ -1,13 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import FlexisurLogin from '../Features/Users/components/login'
 import FlexisurRegister from '../Features/Users/components/register'
-import Pedido from '../Features/Pedido/components/Pedido'
+import MakeOrder from '../Features/Pedido/components/MakeOrder.tsx'
 import DetallePedido from '../Features/Pedido/components/DetallePedido'
 import AdminPedidos from '../Features/Admin/components/AdminPedidos'
 import Navigation from '../Core/components/Navigation';
 import { PedidoProvider } from '../Features/Pedido/context/PedidoContext';
 import { AuthProvider } from '../Features/Users/context/AuthContext';
 import { ProtectedRoute } from '../Core/components/ProtectedRoute';
+import { SupplySearch } from '../Features/Supplies/pages/SupplySearch.tsx';
 
 const AppRouter = () => {
     return(
@@ -22,15 +23,23 @@ const AppRouter = () => {
             <Route 
               path="/pedido" 
               element={
-                <ProtectedRoute>
-                  <Pedido />
+                <ProtectedRoute requiredRole='client'>
+                  <MakeOrder />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/pedido/supply-search" 
+              element={
+                <ProtectedRoute requiredRole='client'>
+                  <SupplySearch />
                 </ProtectedRoute>
               } 
             />
             <Route 
               path="/detalle-pedido" 
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredRole='client'>
                   <DetallePedido />
                 </ProtectedRoute>
               } 

@@ -1,0 +1,32 @@
+
+
+.form-text-input {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    /* Increased base padding */
+    background-color: #d4dff1;
+    /* Lighter gray background */
+    color: white;
+    border-radius: 0.75rem;
+    /* More rounded corners */
+    border: none;
+    outline: none;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
+    /* Increased base font size */
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    /* Increased margin between inputs */
+}
+
+.form-text-input::placeholder {
+    color: #9ca3af;
+    /* placeholder-gray-400 */
+}
+
+.form-text-input:focus {
+    box-shadow: 0 0 0 2px #69a2ff;
+    /* focus:ring-2 focus:ring-blue-500 */
+    background-color: #6d77d3;
+    /* Slightly blue tint on focus */
+}
