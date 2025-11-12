@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePedidos } from '../context/PedidoContext.tsx';
-import './Pedido.css';
+import './MakeOrder.css';
 import { authService } from '../../Users/service/authService.ts'; 
 import { PageCard } from '../../../Core/components/PageCard.tsx';
 import { ContentSection } from '../../../Core/components/ContentSection.tsx';
@@ -151,8 +151,8 @@ const MakeOrder = () => {
   return (
     <div className="pedido-container">
       <PageCard description='Sistema de Gestión de Pedidos de Mangueras'>
-        <ContentSection>
-            <div className="detalles-section">
+        <div className='pedido-content'>
+          <ContentSection>
               <h2>Detalles del pedido:</h2>
               
               <div className="detalle-item">
@@ -256,7 +256,7 @@ const MakeOrder = () => {
                   + Agregar Agregado
                 </button>
               </div>
-            </div>
+            </ContentSection>
 
             <div className="descripcion-section">
               <h3>Descripción:</h3>
@@ -267,7 +267,7 @@ const MakeOrder = () => {
                 placeholder="Se puede explicar los detalles del pedido explicando el uso que se le dará de manera que permita asesorar mejor el pedido."
               />
             </div>
-          </ContentSection>
+          </div>
 
           <SummarySection>
             <h3>Resumen del pedido:</h3>
