@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usePedidos } from '../context/PedidoContext';
+import { usePedidos } from '../context/PedidoContext.tsx';
 import './Pedido.css';
-import { authService } from '../../Users/service/authService'; 
+import { authService } from '../../Users/service/authService.ts'; 
 import { PageCard } from '../../../Core/components/PageCard.tsx';
 import { ContentSection } from '../../../Core/components/ContentSection.tsx';
 import { SummarySection } from '../../../Core/components/SummarySection.tsx';
@@ -17,7 +17,7 @@ interface Item {
 
 
 
-const Pedido = () => {
+const MakeOrder = () => {
   console.log('User Info:', authService.getUserInfo())
   
   const navigate = useNavigate();
@@ -326,4 +326,4 @@ const Pedido = () => {
   );
 };
 
-export default Pedido;
+export default MakeOrder;

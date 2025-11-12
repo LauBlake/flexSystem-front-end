@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import FlexisurLogin from '../Features/Users/components/login'
 import FlexisurRegister from '../Features/Users/components/register'
-import Pedido from '../Features/Pedido/components/Pedido'
+import MakeOrder from '../Features/Pedido/components/MakeOrder.tsx'
 import DetallePedido from '../Features/Pedido/components/DetallePedido'
 import AdminPedidos from '../Features/Admin/components/AdminPedidos'
 import Navigation from '../Core/components/Navigation';
@@ -24,7 +24,7 @@ const AppRouter = () => {
               path="/pedido" 
               element={
                 <ProtectedRoute requiredRole='client'>
-                  <Pedido />
+                  <MakeOrder />
                 </ProtectedRoute>
               } 
             />
