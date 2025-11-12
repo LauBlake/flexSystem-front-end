@@ -6,6 +6,8 @@ import type { OrderInfo } from '../order.interface.ts';
 import { orderService } from '../services/orderService.ts';
 
 type LocationState = { order?: OrderInfo } | undefined;
+import { PageCard } from '../../../Core/components/PageCard.tsx';
+import { SummarySection } from '../../../Core/components/SummarySection.tsx';
 
 const DetallePedido = () => {
   const navigate = useNavigate();
@@ -77,14 +79,8 @@ const DetallePedido = () => {
 
   return (
     <div className="detalle-pedido-container">
-      <div className="detalle-pedido-card">
-        <div className="detalle-pedido-header">
-          <h1>Flexisur</h1>
-          <p>Gestión de Pedidos de Mangueras</p>
-        </div>
-
-        <div className="detalle-pedido-main">
-          {orders.length === 0 ? (
+      <PageCard description='Gestión de Pedidos de Mangueras'>
+        {orders.length === 0 ? (
             <div className="empty-state">
               <p>No hay pedidos agregados</p>
               <button className="add-pedido-btn-large" onClick={handleAgregarPedido}>
@@ -104,8 +100,8 @@ const DetallePedido = () => {
                   <span className="add-icon">+</span>
                 </button>
               </div>
-
-              <div className="summary-section">
+              
+              <SummarySection>
                 <div className="total-info">
                   <h3>
                     Importe TOTAL: {formatearImporte(totalGeneral)}
@@ -120,11 +116,10 @@ const DetallePedido = () => {
                     Continuar
                   </button>
                 </div>
-              </div>
+              </SummarySection>
             </>
           )}
-        </div>
-      </div>
+      </PageCard>
     </div>
   );
 };

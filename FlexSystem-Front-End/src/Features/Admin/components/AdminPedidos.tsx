@@ -3,7 +3,10 @@ import './AdminPedidos.css';
 import { ORDER_STATE_TXT, type OrderInfo } from '../../Pedido/order.interface.ts';
 import { orderService } from '../../Pedido/services/orderService.ts';
 import { OrderCard } from '../../Pedido/components/OrderCard.tsx';
-
+import { FilterSection } from '../../../Core/components/FilterSection.tsx';
+import { FilterSelector } from '../../../Core/components/FilterSelector.tsx';
+import { FilterTextInput } from '../../../Core/components/FilterTextInput.tsx';
+import { PageCard } from '../../../Core/components/PageCard.tsx';
 
 const AdminPedidos = () => {
   const [orders, setOrders] = useState<OrderInfo[]>([]);
@@ -31,53 +34,32 @@ const AdminPedidos = () => {
 
   return (
     <div className="admin-pedidos-container">
-      <div className="admin-pedidos-card">
-        {/* Header */}
-        <div className="admin-header">
-          <h1 className="admin-title">Flexisur</h1>
-          <p className="admin-subtitle">Gestión de Pedidos</p>
-          <div className="admin-divider"></div>
-        </div>
+      <PageCard description='Gestión de Pedidos de Administrador'>
 
         {/* Filtros */}
-        <div className="filtros-section">
-          <div className="filtro-grupo">
-            <label>Estado:</label>
-            <select 
-              value={filtroEstado} 
-              onChange={(e) => setFiltroEstado(e.target.value)}
-              className="filtro-select"
-            >
-              <option value="">Todos</option>
-              <option value="P">{ORDER_STATE_TXT["P" as keyof typeof ORDER_STATE_TXT]}</option>
-              <option value="IP">{ORDER_STATE_TXT["IP" as keyof typeof ORDER_STATE_TXT]}</option>
-              <option value="OTW">{ORDER_STATE_TXT["OTW" as keyof typeof ORDER_STATE_TXT]}</option>
-              <option value="D">{ORDER_STATE_TXT["D" as keyof typeof ORDER_STATE_TXT]}</option>
-            </select>
-          </div>
+        <FilterSection>
+          <FilterSelector value={filtroEstado} setValue={setFiltroEstado} label={'Estado'}>
+            <option value="">Todos</option>
+            <option value="P">{ORDER_STATE_TXT["P" as keyof typeof ORDER_STATE_TXT]}</option>
+            <option value="IP">{ORDER_STATE_TXT["IP" as keyof typeof ORDER_STATE_TXT]}</option>
+            <option value="OTW">{ORDER_STATE_TXT["OTW" as keyof typeof ORDER_STATE_TXT]}</option>
+            <option value="D">{ORDER_STATE_TXT["D" as keyof typeof ORDER_STATE_TXT]}</option>
+          </FilterSelector>
 
-          <div className="filtro-grupo">
-            <label>Id Pedido:</label>
-            <input
-              type="text"
-              value={filtroPedido}
-              onChange={(e) => setFiltroPedido(e.target.value)}
-              placeholder="Buscar pedido..."
-              className="filtro-input"
-            />
-          </div>
+          <FilterTextInput 
+            value={filtroPedido} 
+            setValue={setFiltroPedido} 
+            placeholder='Buscar pedido...'
+            label="ID Pedido:"
+          />
 
-          <div className="filtro-grupo">
-            <label>Rango de fechas:</label>
-            <input
-              type="text"
-              value={filtroFecha}
-              onChange={(e) => setFiltroFecha(e.target.value)}
-              placeholder="DD/MM/YYYY"
-              className="filtro-input"
-            />
-          </div>
-        </div>
+          <FilterTextInput 
+            value={filtroFecha} 
+            setValue={setFiltroFecha} 
+            placeholder='DD/MM/YYYY'
+            label='Rango de fechas:'
+          />
+        </FilterSection>
 
         {/* Tabla de Pedidos */}
         <div className="pedidos-tabla-container">
@@ -113,7 +95,7 @@ const AdminPedidos = () => {
             Total de pedidos: <strong>{orders.length}</strong>
           </p>
         </div>
-      </div>
+      </PageCard>
     </div>
   );
 };

@@ -2,6 +2,31 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../Features/Users/context/AuthContext";
 
+const getFeedForUser = (role: string) => {
+  switch(role)
+  {
+    default:
+    case 'client':
+      return (
+        <>
+          <Link to="/pedido" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
+              Crear Pedido
+          </Link>
+          <Link to="/detalle-pedido" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
+            Detalle Pedidos
+          </Link>
+        </>
+      );
+    case 'admin':
+      return (
+        <Link to="/admin-pedidos" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
+          Admin Pedidos
+        </Link>
+      );
+  }
+}
+
+
 const Navigation: React.FC = () => {
     const { isAuthenticated, user, logout } = useAuth();
     const navigate = useNavigate();
@@ -24,18 +49,7 @@ const Navigation: React.FC = () => {
           Flexisur
         </Link>
         {isAuthenticated && (
-          <>
-            <Link to="/pedido" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
-              Crear Pedido
-            </Link>
-            <Link to="/detalle-pedido" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
-              Detalle Pedidos
-            </Link>
-            {/* TEMPORALMENTE visible para todos mientras no hay roles en backend */}
-            <Link to="/admin-pedidos" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
-              Admin Pedidos
-            </Link>
-          </>
+          getFeedForUser(user?.role[0] ?? "")
         )}
       </div>
       <div>

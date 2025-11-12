@@ -1,15 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usePedidos } from '../context/PedidoContext';
-import './Pedido.css';
-import { authService } from '../../Users/service/authService'; 
+import { usePedidos } from '../context/PedidoContext.tsx';
+import './MakeOrder.css';
+import { authService } from '../../Users/service/authService.ts'; 
+import { PageCard } from '../../../Core/components/PageCard.tsx';
+import { ContentSection } from '../../../Core/components/ContentSection.tsx';
+import { SummarySection } from '../../../Core/components/SummarySection.tsx';
 
 interface Item {
   id: number;
   descripcion: string;
 }
 
-const Pedido = () => {
+
+
+
+
+
+const MakeOrder = () => {
   console.log('User Info:', authService.getUserInfo())
   
   const navigate = useNavigate();
@@ -33,34 +41,7 @@ const Pedido = () => {
   const [tuercas, setTuercas] = useState<Item[]>([]);
   const [agregados, setAgregados] = useState<Item[]>([]);
 
-  // Simulación de datos de API (en una implementación real, estos vendrían de llamadas a la API)
-  useEffect(() => {
-    // Simular llamada a API para caños
-    setCanos([
-      { id: 1, descripcion: "Caño tipo A" },
-      { id: 2, descripcion: "Caño tipo B" },
-      { id: 3, descripcion: "Caño tipo C" }
-    ]);
-
-    // Simular llamada a API para camisas
-    setCamisas([
-      { id: 1, descripcion: "Camisa estándar" },
-      { id: 2, descripcion: "Camisa reforzada" },
-      { id: 3, descripcion: "Camisa flexible" }
-    ]);
-
-    // Simular llamada a API para tuercas
-    setTuercas([
-      { id: 1, descripcion: "Tuerca 1: 5xxxx" },
-      { id: 2, descripcion: "Tuerca 2: 8xxxx" }
-    ]);
-
-    // Simular llamada a API para agregados
-    setAgregados([
-      { id: 1, descripcion: "Agregado 1: 5xxxx" },
-      { id: 2, descripcion: "Agregado 2: 8xxxx" }
-    ]);
-  }, []);
+  
 
   const calcularImporte = () => {
     let total = 0;
@@ -72,7 +53,7 @@ const Pedido = () => {
   };
 
   const handleBuscar = (tipo: string) => {
-    console.log(`Buscando en ${tipo}`);
+    navigate("./supply-search");
   };
 
   const handleCancelar = () => {
@@ -169,15 +150,9 @@ const Pedido = () => {
 
   return (
     <div className="pedido-container">
-      <div className="pedido-card">
-        <div className="pedido-header">
-          <h1>Flexisur</h1>
-          <p>Sistema de Gestión de Pedidos de Mangueras</p>
-        </div>
-        
-        <div className="pedido-main">
-          <div className="pedido-content">
-            <div className="detalles-section">
+      <PageCard description='Sistema de Gestión de Pedidos de Mangueras'>
+        <div className='pedido-content'>
+          <ContentSection>
               <h2>Detalles del pedido:</h2>
               
               <div className="detalle-item">
@@ -281,7 +256,7 @@ const Pedido = () => {
                   + Agregar Agregado
                 </button>
               </div>
-            </div>
+            </ContentSection>
 
             <div className="descripcion-section">
               <h3>Descripción:</h3>
@@ -294,7 +269,7 @@ const Pedido = () => {
             </div>
           </div>
 
-          <div className="resumen-section">
+          <SummarySection>
             <h3>Resumen del pedido:</h3>
             <div className="resumen-items">
               <div className="resumen-item">
@@ -345,11 +320,10 @@ const Pedido = () => {
                 Continuar
               </button>
             </div>
-          </div>
-        </div>
-      </div>
+          </SummarySection>
+      </PageCard>
     </div>
   );
 };
 
-export default Pedido;
+export default MakeOrder;
