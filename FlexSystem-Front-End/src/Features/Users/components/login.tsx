@@ -19,7 +19,7 @@ const FlexisurLogin: React.FC = () => {
   });
 
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login: ctxLogin } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,9 +30,7 @@ const FlexisurLogin: React.FC = () => {
   };
 
   const handleLogin = async () => {
-    console.log('Login attempt:', formData);
-    
-    if(!formData.username || !formData.password){
+    if (!formData.username || !formData.password) {
       alert('Por favor, complete todos los campos.');
       return;
     }
@@ -58,9 +56,8 @@ const FlexisurLogin: React.FC = () => {
     } catch (error) {
       alert('Error during login: ' + (error as Error).message);
     }
-
-
   };
+
 
   const handleCreateAccount = () => {
     console.log('Navigate to create account');

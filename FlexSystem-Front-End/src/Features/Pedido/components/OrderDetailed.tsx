@@ -3,61 +3,82 @@ import { supplyService } from "../../Supplies/services/supplyService.ts";
 import type { SupplyData } from "../../Supplies/supply.interface.ts";
 import type { HoseData } from "../order.interface.ts";
 
+type Props = {
+  hoseData: HoseData;
+  orderDate: string;
+  orderStateLit: string;
+  priceAmount: string;
+};
 
+type LoadedSupply = { amount: number; supply: SupplyData };
 
-export const OrderDetailed = (properties: {hoseData: HoseData, orderDate: string, orderStateLit: string, priceAmount: string}) => {
+export const OrderDetailed = (properties: Props) => {
+  const { hoseData } = properties;
+  const [loadedSupplies, setLoadedSupplies] = useState<LoadedSupply[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    const [casing, setCasing] = useState<SupplyData>({});
-    const [tube, setTube] = useState<SupplyData>({});
-    const [screws, setScrews] = useState<{count: number, screw: SupplyData}[]>([]);
-    const [extras, setExtras] = useState<{count: number, supply: SupplyData}[]>([]);
+  useEffect(() => {
+    const initData = async () => {
+      try {
+        const supplies = await Promise.all(
+          (hoseData.supplyHose ?? []).map(async (item) => ({
+            amount: item.amount,
+            // 👇 usamos el tipo del item para llamar al controlador correcto
+            supply: await supplyService.getSupply(item.supply, item.type),
+          }))
+        );
+        setLoadedSupplies(supplies);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    initData();
+  }, [hoseData]);
 
-    useEffect(() => {
-        const initData = async () => {
-            try {
-                setCasing(await supplyService.getSupply(properties.hoseData.casingId, "casing"));
-                setTube(await supplyService.getSupply(properties.hoseData.tubeId, "tube"));
-                setScrews([]);
-                setExtras(properties.hoseData.extra.map((item) => {
-                    return { count: item.count, supply: {} as SupplyData }
-                }))
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        initData();
-    }, []);
+  return (
+    <div className="pedido-expanded">
+      <div className="expanded-content">
+        <h4>Detalles Completos:</h4>
 
-    return (
-        <div className="pedido-expanded">
-            <div className="expanded-content">
-                <h4>Detalles Completos:</h4>
-                <div className="detalles-grid">
-                    <div className="detalle-group">
-                        <h5>Componentes:</h5>
-                        <ul>
-                            <li>Camisa: {casing?.description || 'No seleccionado'}</li>
-                            <li>Caño: {tube.description || 'No seleccionado'}</li>
-                            {screws.map((screw, index) => (
-                                <li key={index}>
-                                    Tuerca {index + 1}: {screw.screw.description} (Cant: {screw.count || 1})
-                                </li>
-                            ))}
-                        {extras.map((extra, index) => (
-                            <li key={index}>
-                                Agregado {index + 1}: {extra.supply.description} (Cant: {extra.count || 1})
-                            </li>
-                        ))}
-                        </ul>
-                    </div>
-                    <div className="detalle-group">
-                        <h5>Información del Pedido:</h5>
-                        <p><strong>Fecha:</strong> {properties.orderDate}</p>
-                        <p><strong>Estado:</strong> {properties.orderStateLit}</p>
-                        <p><strong>Total:</strong> {`$${properties.priceAmount}`}</p>
-                    </div>
-                </div>
-            </div>
+        <div className="detalles-grid">
+          <div className="detalle-group">
+            <h5>Manguera:</h5>
+            <ul>
+              <li>Descripción: {hoseData.description || "--------"}</li>
+              <li>Largo: {hoseData.length ? `${hoseData.length} m` : "--------"}</li>
+              <li>Cantidad: {hoseData.ammount ?? "--------"}</li>
+              {hoseData.correction && <li>Corrección: {hoseData.correction}</li>}
+              {hoseData.hoseId != null && <li>ID: {hoseData.hoseId}</li>}
+            </ul>
+          </div>
+
+          <div className="detalle-group">
+            <h5>Insumos:</h5>
+            {loading ? (
+              <p>Cargando insumos…</p>
+            ) : loadedSupplies.length ? (
+              <ul>
+                {loadedSupplies.map((item, i) => (
+                  <li key={`${item.supply?.supplyId ?? i}-${i}`}>
+                    {item.supply?.description ?? "Sin descripción"} (Cant: {item.amount})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Sin insumos asociados.</p>
+            )}
+          </div>
+
+          <div className="detalle-group">
+            <h5>Información del Pedido:</h5>
+            <p><strong>Fecha:</strong> {properties.orderDate}</p>
+            <p><strong>Estado:</strong> {properties.orderStateLit}</p>
+            <p><strong>Total:</strong> {`$${properties.priceAmount}`}</p>
+          </div>
         </div>
-    );
-}
+      </div>
+    </div>
+  );
+};

@@ -52,5 +52,23 @@ export const orderService = {
         {
             throw new Error('Error consulting orders: ' + (error as Error).message);
         }
+    },
+
+    async setInProcess(orderId: number) {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`http://localhost:3000/orders/${orderId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ state: 'InProcess' })
+    });
+    if (!res.ok) {
+      const text = await res.text().catch(() => '');
+      throw new Error(`No se pudo actualizar. HTTP ${res.status} ${text}`);
     }
+    return res.json(); // devuelve el pedido actualizado (si tu API lo retorna)
+  },
+  
 }

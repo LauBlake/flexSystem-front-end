@@ -1,0 +1,36 @@
+.btn-iniciar {
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-iniciar:hover {
+  background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+  transform: scale(1.05);
+}
+
+.btn-iniciar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.pedido-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.estado-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}

@@ -10,6 +10,7 @@ const FlexisurRegister: React.FC = () => {
   
   const [formData, setFormData] = useState({
     nombre: '',
+    nombreUsuario: '',
     cuil: '',
     apellido: '',
     mail: '',
@@ -17,6 +18,7 @@ const FlexisurRegister: React.FC = () => {
     telefono: '',
     numero: '',
     contrasenia: '',
+    confirmarContrasenia: '',
     pisoOpcional: '',
     aclaraciones: ''
   });
@@ -39,13 +41,19 @@ const FlexisurRegister: React.FC = () => {
 
     // validaciones
     const data: NewUser = {
-      name: formData.nombre,
-      cuit: formData.cuil,
-      email: formData.mail,
+
+      username: formData.nombreUsuario,
       password: formData.contrasenia,
-      surname: formData.apellido,
-      phone: formData.telefono,
-      address: formData.direccion
+      passwordConfirm: formData.confirmarContrasenia,
+      client: {
+        name: formData.nombre,
+        cuit: formData.cuil,
+        email: formData.mail,
+        surname: formData.apellido,
+        phone: formData.telefono,
+        address: formData.direccion,
+      }
+
     }
     setIsLoading(true);
 
@@ -189,6 +197,32 @@ const FlexisurRegister: React.FC = () => {
                 placeholder="Mínimo 8 caracteres"
                 value={formData.contrasenia}
                 onChange={handleInputChange('contrasenia')}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label className="input-label">
+                🔒 Confirmar tu Contraseña <span className="required">*</span>
+              </label>
+              <input
+                type="confirmPassword"
+                className="form-input"
+                placeholder="Mínimo 8 caracteres"
+                value={formData.confirmarContrasenia}
+                onChange={handleInputChange('confirmarContrasenia')}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label className="input-label">
+                👤 Ingresar tu Nombre <span className="required">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-input"
+                placeholder="Ingresar tu nombre de usuario"
+                value={formData.nombreUsuario}
+                onChange={handleInputChange('nombreUsuario')}
                 required
               />
             </div>
