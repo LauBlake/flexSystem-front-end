@@ -39,7 +39,7 @@ const AppRouter = () => {
             <Route 
               path="/detalle-pedido" 
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredRole='client'>
                   <DetallePedido />
                 </ProtectedRoute>
               } 

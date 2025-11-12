@@ -10,8 +10,8 @@ interface ProtectedRouteProps {
 export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
   const { isAuthenticated, user, loading } = useAuth();
 
-  const getUserRole = (user: any) => {
-    return user?.role[0];
+  const userHasRequired = (user: any, requiredRoles: string[]) => {
+    return user?.role.some((r: string) => requiredRoles.includes(r));
   };
 
   // Mostrar loading mientras se verifica la autenticación
@@ -41,7 +41,7 @@ export const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) 
   }
 
   // Si se requiere un rol específico y el usuario no lo tiene, redirigir a home
-  if (requiredRole && getUserRole(user) !== requiredRole) {
+  if (!userHasRequired(user, [requiredRole ?? "admin"])) {
      return <Navigate to="/" replace />;
   }
 

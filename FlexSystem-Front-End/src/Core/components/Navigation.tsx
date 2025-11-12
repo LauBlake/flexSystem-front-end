@@ -49,7 +49,7 @@ const Navigation: React.FC = () => {
           Flexisur
         </Link>
         {isAuthenticated && (
-          getFeedForUser(user?.role ?? "")
+          getFeedForUser(user?.role[0] ?? "")
         )}
       </div>
       <div>
