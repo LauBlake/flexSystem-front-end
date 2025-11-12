@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { FilterSection } from "../../components/FilterSection.tsx";
-import { FilterSelector } from "../../components/FilterSelector.tsx";
 import { supplyService } from "../services/supplyService.ts";
 import type { SupplyData } from "../supply.interface.ts";
 import { SupplyCard } from "../components/SupplyCard.tsx";
+import { FilterSelector } from "../../../Core/components/FilterSelector.tsx";
+import { FilterSection } from "../../../Core/components/FilterSection.tsx";
+import { PageCard } from "../../../Core/components/PageCard.tsx";
+import { ContentSection } from "../../../Core/components/ContentSection.tsx";
 
 export const SupplySearch = () => {
     const [supplyType, setSupplyType] = useState<string>("Todos");
@@ -23,28 +25,22 @@ export const SupplySearch = () => {
 
     return (
         <div className="global-container">
-            <div className="global-card">
-                <div className="global-header">
-                    Busqueda de pedidos
-                </div>
-                <div className="global-main">
-                    <FilterSection>
-                        <FilterSelector 
-                            value={supplyType} 
-                            setValue={setSupplyType} 
-                            label="Tipo de insumo:"
-                        >
-                            <option value=''>Todos</option>
-                            <option value='Casing'>Mallas</option>
-                            <option value='Screw'>Tuercas</option>
-                            <option value='Elbow'>Codos</option>
-                            <option value='Connector'>Conector</option>
-                            <option value='Tube'>Caño</option>
-                        </FilterSelector>
-                    </FilterSection>
-                    <div className="global-content">
-
-                    </div>
+            <PageCard description="Busqueda de pedidos">
+                <FilterSection>
+                    <FilterSelector 
+                        value={supplyType} 
+                        setValue={setSupplyType} 
+                        label="Tipo de insumo:"
+                    >
+                        <option value=''>Todos</option>
+                        <option value='Casing'>Mallas</option>
+                        <option value='Screw'>Tuercas</option>
+                        <option value='Elbow'>Codos</option>
+                        <option value='Connector'>Conector</option>
+                        <option value='Tube'>Caño</option>
+                    </FilterSelector>
+                </FilterSection>
+                <ContentSection>
                     <table className="global-table">
                         <thead>
                             <tr>
@@ -68,8 +64,8 @@ export const SupplySearch = () => {
                             })}
                         </tbody>
                     </table>
-                </div>
-            </div>
+                </ContentSection>
+            </PageCard>
         </div>
     );
 };

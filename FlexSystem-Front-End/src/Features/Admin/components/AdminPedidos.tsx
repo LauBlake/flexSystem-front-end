@@ -3,10 +3,10 @@ import './AdminPedidos.css';
 import { ORDER_STATE_TXT, type OrderInfo } from '../../Pedido/order.interface.ts';
 import { orderService } from '../../Pedido/services/orderService.ts';
 import { OrderCard } from '../../Pedido/components/OrderCard.tsx';
-import { FilterTextInput } from '../../components/FilterTextInput.tsx';
-import { FilterSelector } from '../../components/FilterSelector.tsx';
-import { FilterSection } from '../../components/FilterSection.tsx';
-
+import { FilterSection } from '../../../Core/components/FilterSection.tsx';
+import { FilterSelector } from '../../../Core/components/FilterSelector.tsx';
+import { FilterTextInput } from '../../../Core/components/FilterTextInput.tsx';
+import { PageCard } from '../../../Core/components/PageCard.tsx';
 
 const AdminPedidos = () => {
   const [orders, setOrders] = useState<OrderInfo[]>([]);
@@ -34,13 +34,7 @@ const AdminPedidos = () => {
 
   return (
     <div className="admin-pedidos-container">
-      <div className="admin-pedidos-card">
-        {/* Header */}
-        <div className="admin-header">
-          <h1 className="admin-title">Flexisur</h1>
-          <p className="admin-subtitle">Gestión de Pedidos</p>
-          <div className="admin-divider"></div>
-        </div>
+      <PageCard description='Gestión de Pedidos de Administrador'>
 
         {/* Filtros */}
         <FilterSection>
@@ -101,7 +95,7 @@ const AdminPedidos = () => {
             Total de pedidos: <strong>{orders.length}</strong>
           </p>
         </div>
-      </div>
+      </PageCard>
     </div>
   );
 };

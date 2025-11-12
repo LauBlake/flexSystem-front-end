@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { usePedidos } from '../context/PedidoContext';
 import './Pedido.css';
 import { authService } from '../../Users/service/authService'; 
+import { PageCard } from '../../../Core/components/PageCard.tsx';
+import { ContentSection } from '../../../Core/components/ContentSection.tsx';
+import { SummarySection } from '../../../Core/components/SummarySection.tsx';
 
 interface Item {
   id: number;
@@ -50,7 +53,7 @@ const Pedido = () => {
   };
 
   const handleBuscar = (tipo: string) => {
-    navigate("/supply-search");
+    navigate("./supply-search");
   };
 
   const handleCancelar = () => {
@@ -147,14 +150,8 @@ const Pedido = () => {
 
   return (
     <div className="pedido-container">
-      <div className="pedido-card">
-        <div className="pedido-header">
-          <h1>Flexisur</h1>
-          <p>Sistema de Gestión de Pedidos de Mangueras</p>
-        </div>
-        
-        <div className="pedido-main">
-          <div className="pedido-content">
+      <PageCard description='Sistema de Gestión de Pedidos de Mangueras'>
+        <ContentSection>
             <div className="detalles-section">
               <h2>Detalles del pedido:</h2>
               
@@ -270,9 +267,9 @@ const Pedido = () => {
                 placeholder="Se puede explicar los detalles del pedido explicando el uso que se le dará de manera que permita asesorar mejor el pedido."
               />
             </div>
-          </div>
+          </ContentSection>
 
-          <div className="resumen-section">
+          <SummarySection>
             <h3>Resumen del pedido:</h3>
             <div className="resumen-items">
               <div className="resumen-item">
@@ -323,9 +320,8 @@ const Pedido = () => {
                 Continuar
               </button>
             </div>
-          </div>
-        </div>
-      </div>
+          </SummarySection>
+      </PageCard>
     </div>
   );
 };
