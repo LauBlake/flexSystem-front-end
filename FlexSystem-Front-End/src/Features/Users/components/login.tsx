@@ -19,7 +19,7 @@ const FlexisurLogin: React.FC = () => {
   });
 
   const navigate = useNavigate();
-  const { login: ctxLogin } = useAuth();
+  const { login } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
