@@ -1,41 +1,17 @@
-import { useEffect, useState } from "react";
-import { supplyService } from "../../Supplies/services/supplyService.ts";
-import type { SupplyData } from "../../Supplies/supply.interface.ts";
-import type { HoseData } from "../order.interface.ts";
+import { useState } from "react";
+import type { HoseEntity } from "../order.interface.ts";
 
-type Props = {
-  hoseData: HoseData;
+type OrderDetailedProps = {
+  hoseData: HoseEntity;
   orderDate: string;
   orderStateLit: string;
   priceAmount: string;
 };
 
-type LoadedSupply = { amount: number; supply: SupplyData };
 
-export const OrderDetailed = (properties: Props) => {
+export const OrderDetailed = (properties: OrderDetailedProps) => {
   const { hoseData } = properties;
-  const [loadedSupplies, setLoadedSupplies] = useState<LoadedSupply[]>([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const initData = async () => {
-      try {
-        const supplies = await Promise.all(
-          (hoseData.supplyHose ?? []).map(async (item) => ({
-            amount: item.amount,
-            // 👇 usamos el tipo del item para llamar al controlador correcto
-            supply: await supplyService.getSupply(item.supply, item.type),
-          }))
-        );
-        setLoadedSupplies(supplies);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    initData();
-  }, [hoseData]);
 
   return (
     <div className="pedido-expanded">
@@ -58,11 +34,11 @@ export const OrderDetailed = (properties: Props) => {
             <h5>Insumos:</h5>
             {loading ? (
               <p>Cargando insumos…</p>
-            ) : loadedSupplies.length ? (
+            ) : properties.hoseData.supplyHose.length ? (
               <ul>
-                {loadedSupplies.map((item, i) => (
-                  <li key={`${item.supply?.supplyId ?? i}-${i}`}>
-                    {item.supply?.description ?? "Sin descripción"} (Cant: {item.amount})
+                {properties.hoseData.supplyHose.map((item, i) => (
+                  <li key={`${item.supply.supplyId ?? i}-${i}`}>
+                    {item.supply.description ?? "Sin descripción"} (Cant: {item.amount})
                   </li>
                 ))}
               </ul>

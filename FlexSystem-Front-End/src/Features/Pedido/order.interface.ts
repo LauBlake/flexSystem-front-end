@@ -1,3 +1,5 @@
+import type { SupplyEntity } from "../Supplies/supply.interface.ts";
+
 export const ORDER_STATE_TXT: Record<string, string> = {
   Pending: "Pendiente",
   InProcess: "En proceso",
@@ -16,11 +18,11 @@ export type SupplyKind = "casing" | "tube" | "screw" | "elbow" | "connector" | "
 /** Coincide con tu DTO/Entidad actual */
 export interface SupplyHoseItem {
   amount: number;
-  supply: number;      // id del insumo
+  supply: SupplyEntity;      // id del insumo
   type: SupplyKind;    // 👈 NUEVO: tipo concreto para pegarle al controlador correcto
 }
 
-export interface HoseData {
+export interface HoseEntity {
   hoseId?: number;            // opcional si el backend lo envía
   description: string;
   length: number;             // ahora numérico
@@ -38,12 +40,11 @@ export interface ClientInfo {
   email?: string;
 }
 
-export interface OrderInfo {
+export interface OrderEntity {
   orderId: number;
-  state: keyof typeof ORDER_STATE_TXT; // 'Pending' | 'InProcess' | ...
-  orderDate: string | Date;
+  state: keyof typeof ORDER_STATE_TXT;
+  orderDate: string;
   description?: string;
   client?: ClientInfo;
-  hoses: HoseData[];
-  amount?: number | string; // puede venir como total o lo calculamos
+  hoses: HoseEntity[];
 }

@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
 import './AdminPedidos.css';
-import { ORDER_STATE_TXT, type OrderInfo } from '../../Pedido/order.interface.ts';
+import { ORDER_STATE_TXT, type OrderEntity } from '../../Pedido/order.interface.ts';
 import { orderService } from '../../Pedido/services/orderService.ts';
-import { OrderCard } from '../../Pedido/components/OrderCard.tsx';
+import { OrderCard, } from '../../Pedido/components/OrderCard.tsx';
 import { FilterSection } from '../../../Core/components/FilterSection.tsx';
 import { FilterSelector } from '../../../Core/components/FilterSelector.tsx';
 import { FilterTextInput } from '../../../Core/components/FilterTextInput.tsx';
 import { PageCard } from '../../../Core/components/PageCard.tsx';
 
-const AdminPedidos = () => {
-  const [orders, setOrders] = useState<OrderInfo[]>([]);
 
+
+const AdminPedidos = () => {
+  const [orders, setOrders] = useState<OrderEntity[]>([]);
   const [filtroEstado, setFiltroEstado] = useState<string>('');
   const [filtroPedido, setFiltroPedido] = useState<string>('');
   const [filtroFecha, setFiltroFecha] = useState<string>('');
+
 
   useEffect(() => {
     const fecthOrders = async () => {
@@ -60,7 +62,6 @@ const AdminPedidos = () => {
             label='Rango de fechas:'
           />
         </FilterSection>
-
         {/* Tabla de Pedidos */}
         <div className="pedidos-tabla-container">
           <table className="pedidos-tabla">
@@ -81,8 +82,8 @@ const AdminPedidos = () => {
                   </td>
                 </tr>
               ) : (
-                orders.map((order, index) => (
-                  <OrderCard key={index} rowKey={index} orderInfo={order} />
+                orders.map((order: OrderEntity) => (
+                  <OrderCard rowKey={order.orderId} order={order}/>
                   ))
               )}
             </tbody>
