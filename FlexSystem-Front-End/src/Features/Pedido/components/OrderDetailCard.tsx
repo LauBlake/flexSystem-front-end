@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { OrderInfo, HoseData } from "../order.interface";
+import type { OrderInfo, HoseEntity } from "../order.interface";
 import { ORDER_STATE_TXT } from "../order.interface";
 import { orderService } from "../services/orderService";
 import "./OrderDetailCard.css"; // 👈 nuevo CSS
@@ -54,13 +54,13 @@ export const OrderDetailCard = (props: { id: number; orderInfo: OrderInfo }) => 
     return (order.hoses ?? []).reduce((acc, h) => acc + (Number(h.ammount) || 0), 0);
   })();
 
-  const hoses: HoseData[] = Array.isArray(order.hoses) ? order.hoses : [];
+  const hoses: HoseEntity[] = Array.isArray(order.hoses) ? order.hoses : [];
 
   return (
     <div className="pedido-item">
       <div className="pedido-summary">
         <div className="pedido-info">
-          {hoses.map((hose: HoseData, idx: number) => (
+          {hoses.map((hose: HoseEntity, idx: number) => (
             <div key={idx} className="hose-summary">
               <div><strong>Camisa/Descripción:</strong> {hose.description || "-"}</div>
               <div><strong>Largo:</strong> {String(hose.length)} m</div>
@@ -110,7 +110,7 @@ export const OrderDetailCard = (props: { id: number; orderInfo: OrderInfo }) => 
 
       {expanded && (
         <div className="pedido-expand">
-          {hoses.map((hose: HoseData, idx: number) => {
+          {hoses.map((hose: HoseEntity, idx: number) => {
             const supplyHose = Array.isArray(hose.supplyHose) ? hose.supplyHose : [];
             return (
               <div key={idx} className="hose-detail">

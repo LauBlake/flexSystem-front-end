@@ -2,7 +2,7 @@
 
 
 
-export interface SupplyData {
+export interface SupplyEntity {
     supplyId: number,
     description: string,
     type: string,

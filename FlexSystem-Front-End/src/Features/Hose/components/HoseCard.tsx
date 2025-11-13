@@ -1,6 +1,6 @@
-import type { HoseData } from "../../Pedido/order.interface.ts";
+import type { HoseEntity } from "../../Pedido/order.interface.ts";
 
-export const HoseCard = ({ hoseData }: { hoseData: HoseData }) => {
+export const HoseCard = ({ hoseData }: { hoseData: HoseEntity }) => {
   return (
     <div className="pedido-componentes">
       <div className="componente-line">

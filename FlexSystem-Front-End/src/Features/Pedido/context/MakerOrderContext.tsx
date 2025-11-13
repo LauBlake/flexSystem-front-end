@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react";
-import type { HoseData } from "../order.interface.ts";
+import type { HoseEntity } from "../order.interface.ts";
 
 
 interface MakeOrderContextType {
-    hoses: HoseData[],
+    hoses: HoseEntity[],
 }
 
 
