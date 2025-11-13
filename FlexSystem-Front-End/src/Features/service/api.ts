@@ -4,12 +4,15 @@ export const apiClient = {
     async post (endpoint: string, data: any) {
         try{
             const token = localStorage.getItem('authToken');
+            const headers: any = {
+                'Content-Type': 'application/json'
+            };
+            if(token){
+                headers.Authorization = `Bearer ${token}`;
+            }
             const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...(token? {Authorization: `Bearer ${token}`} : {})
-                },
+                headers,
                 body: JSON.stringify(data),
             });
             const responseData = await response.json();

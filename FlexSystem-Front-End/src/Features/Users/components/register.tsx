@@ -60,12 +60,12 @@ const FlexisurRegister: React.FC = () => {
     try{
       const response = await authService.register(data);
       if(response){
-      setTimeout(() => {
-        console.log('Datos:', formData);
-        setIsLoading(false);
-        navigate('/login');
-      }, 1000);
-    }
+        setTimeout(() => {
+          console.log('Datos:', formData);
+          setIsLoading(false);
+          navigate('/login');
+        }, 1000);
+      }
   }catch(error){
     setIsLoading(false);
     alert('Error durante el registro: ' + (error as Error).message);}

@@ -19,9 +19,14 @@ const getFeedForUser = (role: string) => {
       );
     case 'admin':
       return (
+        <>
         <Link to="/admin-pedidos" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
           Admin Pedidos
         </Link>
+        <Link to="/dealer/create" style={{ margin: '0 15px', textDecoration: 'none', color: 'white' }}>
+          Crear Dealer
+        </Link>
+      </>
       );
   }
 }
