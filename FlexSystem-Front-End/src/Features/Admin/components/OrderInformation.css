@@ -1,0 +1,14 @@
+.hose-data {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.hose-title {
+    background-color: rgb(152, 177, 201);
+    padding: 0.5rem;
+}
+
+.hose-information {
+    margin-left: 3rem;
+}
