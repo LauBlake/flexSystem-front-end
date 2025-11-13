@@ -1,3 +1,4 @@
+import type { DealerUserInterface } from '../../../Dealer/dealer.interface.ts';
 import { apiClient } from '../../service/api';
 
 export interface LoginCredentials {
@@ -122,4 +123,24 @@ export const authService = {
       throw new Error('Error during registration: ' + (error as Error).message);
     }
   },
+
+  async registerDealer(data: DealerUserInterface): Promise<AuthResponse> {
+    try {
+      const response = await apiClient.post('auth/register-dealer', {
+        username: data.username,
+        password: data.password,
+        passwordConfirm: data.passwordConfirm,
+        dealer: {
+          name: data.dealer.name,
+          cuil: data.dealer.cuil,
+          surname: data.dealer.surname,
+          phone: data.dealer.phone,
+        }
+      });
+      return response.data ?? response;
+    } catch (error) {
+      throw new Error('Error during registration: ' + (error as Error).message);
+    }
+  },
+
 };

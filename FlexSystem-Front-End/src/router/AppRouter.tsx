@@ -9,6 +9,7 @@ import { PedidoProvider } from '../Features/Pedido/context/PedidoContext';
 import { AuthProvider } from '../Features/Users/context/AuthContext';
 import { ProtectedRoute } from '../Core/components/ProtectedRoute';
 import { SupplySearch } from '../Features/Supplies/pages/SupplySearch.tsx';
+import { CreateDealer } from '../Features/Admin/components/CreateDealer.tsx';
 
 const AppRouter = () => {
     return(
@@ -52,6 +53,12 @@ const AppRouter = () => {
                 </ProtectedRoute>
               } 
             />
+            <Route path="/dealer/create" 
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <CreateDealer />
+              </ProtectedRoute>
+            } />
           </Routes>
         </PedidoProvider>
       </AuthProvider>
