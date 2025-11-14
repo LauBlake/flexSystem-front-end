@@ -1,6 +1,6 @@
 // deliveryService.ts
 import { apiClient } from "../../service/api.ts";
-import type { AdminDeliveryClient, BaseDeliveryClient, DealerDeliveryClient } from "../delivery.client.ts";
+import type { AdminDeliveryClient, DealerDeliveryClient } from "../delivery.client.ts";
 import type {
   DeliveryEntity,
   DeliveryCreatePayload,
@@ -55,11 +55,4 @@ export const DealerDeliveryService: DealerDeliveryClient = {
   },
 };
 
-export const BothDeliveryService: BaseDeliveryClient = {
-  
-  async markAsDelivered(deliveryId: number): Promise<DeliveryEntity> {
-    const data = await apiClient.patch(`deliveries/finish/${deliveryId}`, {});
-    return data as DeliveryEntity;
-  },
-  
-}
+

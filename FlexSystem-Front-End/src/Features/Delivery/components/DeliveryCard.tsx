@@ -1,6 +1,6 @@
 import type { DeliveryEntity } from "../delivery.interface.ts";
-import { useState, type ReactNode } from "react";
-import { BothDeliveryService } from "../service/deliveryService.ts";
+import { useState } from "react";
+import { DealerDeliveryService } from "../service/deliveryService.ts";
 import { useNavigate } from "react-router-dom";
 
 
@@ -15,7 +15,6 @@ const getStateColor = (estado: string) => {
 export interface DeliveryCardProps {
 
   delivery: DeliveryEntity,
-  children?: ReactNode,
   rowKey: number
 
 }
@@ -27,7 +26,7 @@ export const DeliveryCard = (props: DeliveryCardProps) => {
   const [deliveryState, setDeliverySate] = useState<string>(props.delivery.state);
 
   const onApprovePressed = async () => {
-    await BothDeliveryService.markAsDelivered(props.delivery.id)
+    await DealerDeliveryService.markAsDelivered(props.delivery.id)
     setDeliverySate("DONE");
   }
 

@@ -23,4 +23,5 @@ export interface AdminDeliveryClient extends BaseDeliveryClient {
 export interface DealerDeliveryClient extends BaseDeliveryClient {
 
   search(): Promise<DeliveryEntity[]>;
+  
 }
