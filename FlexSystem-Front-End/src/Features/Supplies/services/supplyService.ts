@@ -1,4 +1,4 @@
-import type { SupplyKind } from "../../Pedido/order.interface.ts";
+import type { SupplyType } from "../../Pedido/order.interface.ts";
 import { apiClient } from "../../service/api.ts";
 import type { SupplyData } from "../supply.interface.ts";
 
@@ -13,7 +13,7 @@ const parseSearch = (query: SupplyQuery) => {
 }
 
 export const supplyService = {
-    async getSupply(id: number, supplyType: SupplyKind): Promise<SupplyData> {
+    async getSupply(id: number, supplyType: SupplyType): Promise<SupplyData> {
         try {
             const response = await apiClient.get(`orders/supplies/${supplyType}/${id}`);
             console.log("Supply data: " + response.data);

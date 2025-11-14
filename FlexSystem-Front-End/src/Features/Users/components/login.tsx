@@ -45,8 +45,6 @@ const FlexisurLogin: React.FC = () => {
       }
       login(response.access_token);
         
-      console.log('Login Successful', authService.getUserInfo())
-        
       const userInfo = authService.getUserInfo();
       if (userInfo && userInfo.role.includes('admin')) {
         navigate('/admin-pedidos');
