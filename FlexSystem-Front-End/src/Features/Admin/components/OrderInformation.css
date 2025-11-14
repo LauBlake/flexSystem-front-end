@@ -1,12 +1,19 @@
+
+.order-info-container {
+    margin: 5rem;
+}
+
 .hose-data {
     display: flex;
     flex-direction: column;
-
+    row-gap: 0.25rem;
+    padding: 0;
 }
 
 .hose-title {
     background-color: rgb(152, 177, 201);
     padding: 0.5rem;
+    margin: 0;
 }
 
 .hose-information {
