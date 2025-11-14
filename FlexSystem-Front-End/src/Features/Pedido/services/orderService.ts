@@ -1,7 +1,7 @@
 import { apiClient } from "../../service/api";
 import type { SupplyEntity } from "../../Supplies/supply.interface.ts";
 import { authService } from "../../Users/service/authService";
-import type { OrderEntity, OrderQuery, HoseEntity, SupplyHoseItem, SupplyKind } from "../order.interface";
+import type { OrderEntity, OrderQuery, HoseEntity, SupplyHoseItem, SupplyType } from "../order.interface";
 
 
 const formatQuery = (query: OrderQuery): string => {
@@ -64,7 +64,7 @@ export const orderService = {
             supplyHose: (hose.supplyHose ?? []).map(
               (item: any): SupplyHoseItem => ({
                 amount: Number(item.amount),
-                type: item.type as SupplyKind,
+                type: item.type as SupplyType,
                 supply: item.supply as SupplyEntity,
               })
             ),
