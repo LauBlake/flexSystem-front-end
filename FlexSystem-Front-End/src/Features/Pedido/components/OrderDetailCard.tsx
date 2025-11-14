@@ -1,14 +1,43 @@
 import { useState } from "react";
-import type { OrderInfo, HoseEntity } from "../order.interface";
+import type { OrderEntity, HoseEntity } from "../order.interface";
 import { ORDER_STATE_TXT } from "../order.interface";
 import { orderService } from "../services/orderService";
-import "./OrderDetailCard.css"; // 👈 nuevo CSS
+import "./OrderDetailCard.css";
 import { useAuth } from "../../Users/context/AuthContext.tsx";
 
-const normRole = (r?: unknown) => String(r ?? '').toLowerCase();
+const normRole = (r?: unknown) => String(r ?? "").toLowerCase();
 
-export const OrderDetailCard = (props: { id: number; orderInfo: OrderInfo }) => {
-  const [order, setOrder] = useState<OrderInfo>(props.orderInfo);
+/** Normaliza cualquier valor (string/number) a number para operar precios/cantidades */
+const toNumber = (value: unknown): number => {
+  if (typeof value === "number") return value;
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (!trimmed) return 0;
+
+    // Ej: "1.234,56" → "1234.56"
+    const normalized = trimmed
+      .replace(/\./g, "") // separador de miles
+      .replace(",", "."); // coma decimal a punto
+
+    const parsed = Number(normalized);
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+  return 0;
+};
+
+/** Calcula el importe real de una manguera a partir de sus supplyHose */
+const getHoseTotal = (hose: HoseEntity): number => {
+  const supplyHose = Array.isArray(hose.supplyHose) ? hose.supplyHose : [];
+
+  return supplyHose.reduce((acc, sh) => {
+    const price = toNumber(sh?.supply?.price); // SupplyEntity.price es string
+    const amount = toNumber(sh?.amount);       // cantidad del insumo en esa manguera
+    return acc + price * amount;
+  }, 0);
+};
+
+export const OrderDetailCard = (props: { id: number; OrderEntity: OrderEntity }) => {
+  const [order, setOrder] = useState<OrderEntity>(props.OrderEntity);
   const { user } = useAuth();
   const isAdmin = normRole(user?.role) === "admin";
 
@@ -41,44 +70,48 @@ export const OrderDetailCard = (props: { id: number; orderInfo: OrderInfo }) => 
   };
 
   const formatMoney = (n: unknown) => {
-    const num = typeof n === "number" ? n : typeof n === "string" ? parseFloat(n) : 0;
+    const num = toNumber(n);
     return new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(num || 0);
   };
 
-  const totalOrder = (() => {
-    if (typeof order.amount === "number") return order.amount;
-    if (typeof order.amount === "string") {
-      const parsed = parseFloat(order.amount);
-      if (!Number.isNaN(parsed)) return parsed;
-    }
-    return (order.hoses ?? []).reduce((acc, h) => acc + (Number(h.ammount) || 0), 0);
-  })();
-
   const hoses: HoseEntity[] = Array.isArray(order.hoses) ? order.hoses : [];
+
+  // 🔧 Total de la orden calculado desde hoses -> supplyHose -> supply.price * amount
+  const totalOrder = hoses.reduce((acc, hose) => acc + getHoseTotal(hose), 0);
+
+  // 🔧 Descripción a nivel orden: concateno las descripciones de las mangueras
+  const orderDescription =
+    hoses.map(h => h.description).filter(Boolean).join(" | ") || "-";
 
   return (
     <div className="pedido-item">
       <div className="pedido-summary">
         <div className="pedido-info">
-          {hoses.map((hose: HoseEntity, idx: number) => (
-            <div key={idx} className="hose-summary">
-              <div><strong>Camisa/Descripción:</strong> {hose.description || "-"}</div>
-              <div><strong>Largo:</strong> {String(hose.length)} m</div>
-              <div><strong>Importe Hose:</strong> {formatMoney(hose.ammount)}</div>
-            </div>
-          ))}
+          {hoses.map((hose: HoseEntity, idx: number) => {
+            const hoseTotal = getHoseTotal(hose);
+            return (
+              <div key={idx} className="hose-summary">
+                <div><strong>Camisa/Descripción:</strong> {hose.description || "-"}</div>
+                <div><strong>Largo:</strong> {String(hose.length)} m</div>
+                {/* 🔧 Importe Hose calculado */}
+                <div><strong>Importe Hose:</strong> {formatMoney(hoseTotal)}</div>
+              </div>
+            );
+          })}
         </div>
 
         <div className="pedido-details">
           <div className="descripcion-section">
             <h4>Descripción:</h4>
-            <p>{order.description || "-"}</p>
+            {/* 🔧 ahora usa las descripciones de las hoses */}
+            <p>{orderDescription}</p>
           </div>
         </div>
 
         <div className="pedido-actions">
           <div className="importe-info">
             <span className="importe-label">Importe:</span>
+            {/* 🔧 Total de la orden calculado */}
             <span className="importe-valor">{formatMoney(totalOrder)}</span>
           </div>
 
@@ -112,6 +145,8 @@ export const OrderDetailCard = (props: { id: number; orderInfo: OrderInfo }) => 
         <div className="pedido-expand">
           {hoses.map((hose: HoseEntity, idx: number) => {
             const supplyHose = Array.isArray(hose.supplyHose) ? hose.supplyHose : [];
+            const hoseTotal = getHoseTotal(hose);
+
             return (
               <div key={idx} className="hose-detail">
                 <h4>Manguera #{hose.hoseId ?? idx + 1}</h4>
@@ -119,7 +154,8 @@ export const OrderDetailCard = (props: { id: number; orderInfo: OrderInfo }) => 
                   <li><strong>Descripción:</strong> {hose.description || "-"}</li>
                   <li><strong>Largo:</strong> {String(hose.length)} m</li>
                   {hose.correction ? <li><strong>Corrección:</strong> {hose.correction}</li> : null}
-                  <li><strong>Importe:</strong> {formatMoney(hose.ammount)}</li>
+                  {/* 🔧 Importe calculado */}
+                  <li><strong>Importe:</strong> {formatMoney(hoseTotal)}</li>
                 </ul>
 
                 <div className="supplies">
@@ -127,13 +163,17 @@ export const OrderDetailCard = (props: { id: number; orderInfo: OrderInfo }) => 
                   {supplyHose.length > 0 ? (
                     <table className="supplies-table">
                       <thead>
-                        <tr><th>Supply ID</th><th>Cantidad</th></tr>
+                        <tr>
+                          <th>Supply</th>
+                          <th>Cantidad</th>
+                        </tr>
                       </thead>
                       <tbody>
                         {supplyHose.map((sh, i) => (
                           <tr key={i}>
-                            <td>{String((sh as any).supply)}</td>
-                            <td>{String((sh as any).amount)}</td>
+                            {/* SupplyEntity: id + descripción para que no salga [object Object] */}
+                            <td>{`${sh.supply.supplyId} - ${sh.supply.description}`}</td>
+                            <td>{String(sh.amount)}</td>
                           </tr>
                         ))}
                       </tbody>

@@ -1,5 +1,5 @@
 import type { DeliveryEntity } from "../delivery.interface.ts";
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { DealerDeliveryService } from "../service/deliveryService.ts";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,6 @@ const getStateColor = (estado: string) => {
 export interface DeliveryCardProps {
 
   delivery: DeliveryEntity,
-  children?: ReactNode,
   rowKey: number
 
 }
