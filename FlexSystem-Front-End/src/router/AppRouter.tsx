@@ -5,7 +5,7 @@ import MakeOrder from '../Features/Pedido/components/MakeOrder.tsx'
 import DetallePedido from '../Features/Pedido/components/DetallePedido'
 import AdminPedidos from '../Features/Admin/components/AdminPedidos'
 import Navigation from '../Core/components/Navigation';
-import { PedidoProvider } from '../Features/Pedido/context/PedidoContext';
+import { OrderProvider } from '../Features/Pedido/context/OrderContext.tsx';
 import { AuthProvider } from '../Features/Users/context/AuthContext';
 import { ProtectedRoute } from '../Core/components/ProtectedRoute';
 import { SupplySearch } from '../Features/Supplies/pages/SupplySearch.tsx';
@@ -16,7 +16,7 @@ const AppRouter = () => {
     <Router>
       <AuthProvider>
         <Navigation />
-        <PedidoProvider>
+        <OrderProvider>
           <Routes>
             <Route path="/" element={<h1>Hola mundo</h1>} />
             <Route path="/login" element= {<FlexisurLogin />} />
@@ -60,7 +60,7 @@ const AppRouter = () => {
               </ProtectedRoute>
             } />
           </Routes>
-        </PedidoProvider>
+        </OrderProvider>
       </AuthProvider>
     </Router>
     )
