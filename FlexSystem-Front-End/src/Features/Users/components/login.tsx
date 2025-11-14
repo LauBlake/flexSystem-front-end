@@ -52,6 +52,8 @@ const FlexisurLogin: React.FC = () => {
         navigate('/admin-pedidos');
       } else if (userInfo && userInfo.role.includes('client')) {
         navigate('/detalle-pedido');
+      } else if (userInfo && userInfo.role.includes('dealer')) {
+        navigate('/pedido');
       }
     } catch (error) {
       alert('Error during login: ' + (error as Error).message);

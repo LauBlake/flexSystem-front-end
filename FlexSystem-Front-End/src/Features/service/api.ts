@@ -51,7 +51,7 @@ export const apiClient = {
         }
     },
 
-    async patch(endpoint: string, data: any) {
+    async patch(endpoint: string, data?: any) {
         try{
             const token = localStorage.getItem('authToken');
             const response = await fetch(`${API_BASE_URL}/${endpoint}`, {

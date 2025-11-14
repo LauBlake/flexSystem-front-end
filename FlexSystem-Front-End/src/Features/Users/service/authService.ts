@@ -1,4 +1,4 @@
-import type { DealerUserInterface } from '../../../Dealer/dealer.interface.ts';
+import type { DealerUserInterface } from '../../Dealer/dealer.interface.ts';
 import { apiClient } from '../../service/api';
 
 export interface LoginCredentials {

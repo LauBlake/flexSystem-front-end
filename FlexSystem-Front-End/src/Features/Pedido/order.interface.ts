@@ -44,7 +44,6 @@ export interface OrderEntity {
   orderId: number;
   state: keyof typeof ORDER_STATE_TXT;
   orderDate: string;
-  description?: string;
   client?: ClientInfo;
   hoses: HoseEntity[];
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { DealerUserInterface } from "../../../Dealer/dealer.interface.ts";
+import type { DealerUserInterface } from "../../Dealer/dealer.interface.ts";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../../Users/service/authService.ts";
 import { PasswordInput } from "../../../Core/components/PasswordInput.tsx";

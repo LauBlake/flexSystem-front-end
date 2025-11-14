@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ORDER_STATE_TXT, type OrderEntity } from '../order.interface.ts';
 import { orderService } from '../services/orderService.ts';
-import { SupplyOrderItem } from '../../Supplies/components/SupplyOrderItem.tsx';
 
 
 const getStateColor = (estado: string) => {
@@ -16,11 +15,8 @@ const getStateColor = (estado: string) => {
 };
 
 
-
-
 export interface OrderCardProps {
   order: OrderEntity,
-  children?: any,
   rowKey: number
 }
 
