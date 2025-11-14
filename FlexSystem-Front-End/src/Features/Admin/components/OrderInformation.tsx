@@ -1,8 +1,10 @@
 import { ContentSection } from "../../../Core/components/ContentSection.tsx";
 import { PageCard } from "../../../Core/components/PageCard.tsx";
 import type { OrderEntity } from "../../Pedido/order.interface.ts";
-import { SupplyOrderItem } from "../../Supplies/components/SupplyOrderItem.tsx";
+import type { ClientEntity } from "../../Users/interface/usersInterface.ts";
+import { ClientBadge } from "../../Users/components/ClientBadge.tsx";
 import './OrderInformation.css'
+import { HoseBadge } from "../../Hose/components/HoseBadge.tsx";
 
 export interface OrderInformationProps {
     order: OrderEntity
@@ -13,29 +15,10 @@ export const OrderInformation = (props: OrderInformationProps) => {
         <div className='order-info-container'>
             <PageCard description="Información del pedido">
                 <ContentSection>
+                    <ClientBadge client={props.order.client ?? {} as ClientEntity}/>
                     {props.order.hoses.map((hose, index) => {
-                        return (
-                            <div className="hose-data">
-                                <p className="hose-title">Manguera {index}</p>
-                                <label className="hose-information">Largo: {hose.length}cm</label>
-                                <label className="hose-information">Cantidad: {hose.ammount}</label>
-                                <p className="hose-information">Composición:</p>
-                                <div className="hose-information hose-items">
-                                    {hose.supplyHose.map((item, index) => {
-                                        return (
-                                            <SupplyOrderItem 
-                                                supply={item.supply} 
-                                                index={index} 
-                                                count={item.amount}
-                                            />
-                                        );
-                                    })}
-
-                                </div>
-                            </div>
-                        );
+                        return <HoseBadge hoseData={hose}/>;
                     })}
-                    
                 </ContentSection>
             </PageCard>
         </div>

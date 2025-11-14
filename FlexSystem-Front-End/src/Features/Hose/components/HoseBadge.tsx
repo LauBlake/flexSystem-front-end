@@ -1,6 +1,7 @@
 import type { HoseEntity } from "../../Pedido/order.interface.ts";
+import { SupplyOrderItem } from "../../Supplies/components/SupplyOrderItem.tsx";
 
-export const HoseCard = ({ hoseData }: { hoseData: HoseEntity }) => {
+export const HoseBadge = ({ hoseData }: { hoseData: HoseEntity }) => {
   return (
     <div className="pedido-componentes">
       <div className="componente-line">
@@ -30,17 +31,13 @@ export const HoseCard = ({ hoseData }: { hoseData: HoseEntity }) => {
           <span className="componente-valor">{hoseData.correction}</span>
         </div>
       )}
-
-      {hoseData.supplyHose?.length > 0 && (
-        <div className="componente-line">
-          <span className="componente-label">Suministros:</span>
-          <span className="componente-valor">
-            {hoseData.supplyHose
-              .map((supply) => `ID ${supply.supply} x${supply.amount}`)
-              .join(", ")}
-          </span>
-        </div>
-      )}
+      {
+        hoseData.supplyHose.map((item, index) => {
+          const count = item.amount;
+          const supply = item.supply;
+          return <SupplyOrderItem count={count} supply={supply} index={index}/>;
+        })
+      }
     </div>
   );
 };
