@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { ORDER_STATE_TXT, type OrderEntity } from '../order.interface.ts';
 import { orderService } from '../services/orderService.ts';
+import type { SupplyEntity } from '../../Supplies/supply.interface.ts';
+
 
 
 const getStateColor = (estado: string) => {
@@ -17,19 +19,19 @@ const getStateColor = (estado: string) => {
 
 export interface OrderCardProps {
   order: OrderEntity,
-  rowKey: number
+  rowKey: number,
+  onSee: (orderId: number) => void
 }
 
 
 export const OrderCard = (props: OrderCardProps) => {
-
   const [price, setPrice] = useState<string>("0");
   const [expanded, setExpanded] = useState<boolean>(false);
   const [orderState, setOrderSate] = useState<string>(props.order.state);
 
   const onSeePressed = () => {
     setExpanded(!expanded);
-    console.log("Expanded ", expanded);
+    props.onSee(props.order.orderId);
   }
 
   const onApprovePressed = async () => {
@@ -42,7 +44,7 @@ export const OrderCard = (props: OrderCardProps) => {
       let total : number = 0;
       for (const ho of props.order.hoses) {
         for (const item of ho.supplyHose) {
-          const prod = parseFloat(item.supply.price) * item.amount;
+          const prod = parseFloat((item.supply as SupplyEntity).price) * item.amount;
           total += prod;
         }
       }
