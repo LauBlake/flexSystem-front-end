@@ -1,0 +1,17 @@
+
+.client-badge {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.badge-subsections {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+}
+
+.badge-subsections div {
+    display: flex;
+    flex-direction: column;
+}
