@@ -1,4 +1,5 @@
 import type { SupplyEntity } from "../Supplies/supply.interface.ts";
+import type { ClientEntity } from "../Users/interface/usersInterface.ts";
 
 export const ORDER_STATE_TXT: Record<string, string> = {
   Pending: "Pendiente",
@@ -14,12 +15,12 @@ export interface OrderQuery {
   date?: string | null;
 }
 
-export type SupplyKind = "casing" | "tube" | "screw" | "elbow" | "connector" | "supply";
+export type SupplyType = "casing" | "tube" | "screw" | "elbow" | "connector" | "supply";
 /** Coincide con tu DTO/Entidad actual */
 export interface SupplyHoseItem {
   amount: number;
-  supply: SupplyEntity;      // id del insumo
-  type: SupplyKind;    // 👈 NUEVO: tipo concreto para pegarle al controlador correcto
+  supply: SupplyEntity | number;      // id del insumo
+  type: SupplyType;    // 👈 NUEVO: tipo concreto para pegarle al controlador correcto
 }
 
 export interface HoseEntity {
@@ -31,19 +32,24 @@ export interface HoseEntity {
   supplyHose: SupplyHoseItem[];
 }
 
-export interface ClientInfo {
-  clientId?: number;
-  name?: string;
-  surname?: string;
-  cuit?: string;
-  phone?: string;
-  email?: string;
-}
-
 export interface OrderEntity {
   orderId: number;
   state: keyof typeof ORDER_STATE_TXT;
   orderDate: string;
-  client?: ClientInfo;
+  client?: ClientEntity;
   hoses: HoseEntity[];
+}
+
+export interface HoseEntityCreate {
+  length: number,
+  description: string,
+  tubeId: number,
+  casingId: number,
+  screwId: number | [number, number],
+  extra: SupplyHoseItem[],
+}
+
+export interface OrderEntityCreate {
+  client: number;
+  hoses: HoseEntityCreate[]
 }
