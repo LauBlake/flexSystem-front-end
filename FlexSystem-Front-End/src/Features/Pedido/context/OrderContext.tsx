@@ -33,7 +33,7 @@ export const useOrders = () => {
 
 
 
-export const PedidoProvider = ({ children }: { children: ReactNode }) => {
+export const OrderProvider = ({ children }: { children: ReactNode }) => {
   const [order, setOrder] = useState<OrderEntityCreate>({client: 0, hoses:[]});
   const [activeHoseIndex, setActiveHose] = useState<number>(-1);
 
